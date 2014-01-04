@@ -6,14 +6,18 @@
 Welcome to islplot's documentation!
 ===================================
 
+islplot is a Python module that allows to create graphical plots of `isl
+<http://www.kotnet.org/~skimo/isl/>`_ sets and maps, which are of sets of
+integer points or relations between such sets that are bounded by piecewise
+quasi-affine constraints. They can be created and operated on in python using
+`islpy <https://pypi.python.org/pypi/islpy/>`_.
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: islplot.plotter
-
-
+.. automodule:: islplot
 
 Indices and tables
 ==================
