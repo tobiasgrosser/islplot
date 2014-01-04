@@ -12,12 +12,17 @@ integer points or relations between such sets that are bounded by piecewise
 quasi-affine constraints. They can be created and operated on in python using
 `islpy <https://pypi.python.org/pypi/islpy/>`_.
 
+It currently provides the following functions:
+
+.. automodule:: islplot.plotter
+  :members:
+  :undoc-members:
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: islplot
 
 Indices and tables
 ==================
