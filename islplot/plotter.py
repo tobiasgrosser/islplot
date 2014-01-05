@@ -153,6 +153,8 @@ def plot_bset_shape(bset_data, show_vertices=True, *args, **kwargs):
                           shape.
     """
 
+    assert bset_data.is_bounded(), "Expected bounded set"
+
     vertices = _isl_bset_get_vertex_coordinates(bset_data)
 
     if show_vertices:
@@ -180,6 +182,9 @@ def plot_set_shapes(set_data, *args, **kwargs):
 
     :param set_data: The set to plot.
     """
+
+    assert set_data.is_bounded(), "Expected bounded set"
+
     set_data.foreach_basic_set(lambda x: plot_bset_shape(x, **kwargs))
 
 __all__ = ['plot_set_points', 'plot_bset_shape', 'plot_set_shapes',
