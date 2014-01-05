@@ -144,7 +144,9 @@ def _isl_bset_get_vertex_coordinates(bset_data):
     vertices = sorted(vertices, key=f)
     return vertices
 
-def plot_bset_shape(bset_data, show_vertices=True, *args, **kwargs):
+def plot_bset_shape(bset_data, show_vertices=True, color="orange",
+                    vertex_color=None,
+                    vertex_marker="o", vertex_size=10):
     """
     Given an basic set, plot the shape formed by the constraints that define
     the basic set.
@@ -152,16 +154,24 @@ def plot_bset_shape(bset_data, show_vertices=True, *args, **kwargs):
     :param bset_data: The basic set to plot.
     :param show_vertices: Show the vertices at the corners of the basic set's
                           shape.
+    :param color: The backbround color of the shape.
+    :param vertex_color: The color of the vertex markers.
+    :param vertex_marker: The marker used to draw the vertices.
+    :param vertex_size: The size of the vertices.
     """
 
     assert bset_data.is_bounded(), "Expected bounded set"
+
+    if not vertex_color:
+        vertex_color = color
 
     vertices = _isl_bset_get_vertex_coordinates(bset_data)
 
     if show_vertices:
         dimX = [x[0] for x in vertices]
         dimY = [x[1] for x in vertices]
-        _plt.plot(dimX, dimY, ".")
+        _plt.plot(dimX, dimY, vertex_marker, markersize=vertex_size,
+                  color=vertex_color)
 
     import matplotlib.path as _matplotlib_path
     import matplotlib.patches as _matplotlib_patches
@@ -173,7 +183,7 @@ def plot_bset_shape(bset_data, show_vertices=True, *args, **kwargs):
     pathdata.append((Path.CLOSEPOLY, (0, 0)))
     codes, verts = zip(*pathdata)
     path = Path(verts, codes)
-    patch = PathPatch(path, **kwargs)
+    patch = PathPatch(path, facecolor=color)
     _plt.gca().add_patch(patch)
 
 def plot_set_shapes(set_data, *args, **kwargs):
