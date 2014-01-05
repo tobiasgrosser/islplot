@@ -4,6 +4,10 @@ islplot
 islplot is a library that generates matplotlib illustrations for isl
 integer sets and maps.
 
+To get an impression of what to do with islplot, have a look at the usage
+examples at:
+
+http://nbviewer.ipython.org/github/tobig/islplot/blob/master/notebooks/islplot-examples.ipynb
 
 
 
