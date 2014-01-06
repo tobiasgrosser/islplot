@@ -199,7 +199,8 @@ def plot_set_shapes(set_data, *args, **kwargs):
     set_data.foreach_basic_set(lambda x: plot_bset_shape(x, **kwargs))
 
 
-def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_size=10):
+def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
+                       vertex_size=10):
     """
     Plot a map in groups of convex sets
 
@@ -213,6 +214,7 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_size=10):
     :param bmap: The map defining the groups of convex sets.
     :param vertex_color: The color the vertices are plotted.
     :param vertex_size: The size the vertices are plotted.
+    :param vertex_marker: The marker the vertices are plotted as.
     :param color: The color the shapes are plotted.
     """
 
@@ -234,9 +236,10 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_size=10):
 
         part_set = part_set_convex
 
-        plot_set_points(part_set, color=vertex_color, size=vertex_size)
+        plot_set_points(part_set, color=vertex_color, size=vertex_size,
+                        marker=vertex_marker)
         plot_bset_shape(part_set, color=color, vertex_color=vertex_color,
-                        vertex_size=vertex_size)
+                        vertex_size=vertex_size, vertex_marker=vertex_marker)
 
 __all__ = ['plot_set_points', 'plot_bset_shape', 'plot_set_shapes',
            'plot_map', 'plot_map_as_groups']
