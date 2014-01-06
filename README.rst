@@ -3,12 +3,13 @@ Copyright 2014 - `Tobias Grosser <http://www.grosser.es>`_
 islplot
 =======
 
-islplot is a library that generates illustrations (currently matplotlib) of
-integer sets
+islplot is a library that generates illustrations of integer sets
 and maps. It relies on `isl <repo.or.cz/w/isl.git>`_ to model the integer sets
 and uses the `islpy <https://pypi.python.org/pypi/islpy>`_ Python bindings.
+Plotting is performed with `matplotlib <http://matplotlib.org>`_.
 
 To get an impression of islplot have a look at the `examples <http://nbviewer.ipython.org/github/tobig/islplot/blob/master/notebooks/islplot-examples.ipynb>`_.
+
 
 License: MIT (see `LICENSE.txt <https://github.com/tobig/islplot/blob/master/LICENSE.txt>`_)
 
