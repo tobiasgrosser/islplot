@@ -1,3 +1,5 @@
+Copyright 2014 - `Tobias Grosser <http://www.grosser.es>`_
+
 islplot
 =======
 
