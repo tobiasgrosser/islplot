@@ -144,7 +144,7 @@ def _isl_bset_get_vertex_coordinates(bset_data):
     vertices = sorted(vertices, key=f)
     return vertices
 
-def plot_bset_shape(bset_data, show_vertices=True, color="orange",
+def plot_bset_shape(bset_data, show_vertices=True, color="gray",
                     vertex_color=None,
                     vertex_marker="o", vertex_size=10):
     """
@@ -198,5 +198,43 @@ def plot_set_shapes(set_data, *args, **kwargs):
 
     set_data.foreach_basic_set(lambda x: plot_bset_shape(x, **kwargs))
 
+
+def plot_map_as_groups(bmap, color="gray", vertex_color=None):
+    """
+    Plot a map in groups of convex sets
+
+    This function expects a map that assigns each domain element a single
+    group id, such that each group forms a convex set of points. This function
+    plots now each group as such a convex shape.
+
+    This is e.g. useful to illustrate a tiling that is given as a between
+    iteration vectors to tile ids.
+
+    :param bmap: The map defining the groups of convex sets.
+    :param vertex_color: The color the vertices are plotted.
+    :param color: The color the shapes are plotted.
+    """
+
+    if not vertex_color:
+        vertex_color = color
+
+    points = []
+    range = bmap.range()
+    range.foreach_point(points.append)
+
+    for point in points:
+        point_set = _islpy.BasicSet.from_point(point)
+        part_set = bmap.intersect_range(point_set).domain()
+        part_set_convex = part_set.convex_hull()
+
+        # We currently expect that each group can be represented by a
+        # single convex set.
+        assert (part_set == part_set_convex)
+
+        part_set = part_set_convex
+
+        plot_set_points(part_set, color=vertex_color)
+        plot_bset_shape(part_set, color=color, vertex_color=vertex_color)
+
 __all__ = ['plot_set_points', 'plot_bset_shape', 'plot_set_shapes',
-           'plot_map']
+           'plot_map', 'plot_map_as_groups']
