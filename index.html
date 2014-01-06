@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to islplot’s documentation! &mdash; islplot 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="islplot 0.1 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">islplot 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-islplot-s-documentation">
+<h1>Welcome to islplot&#8217;s documentation!<a class="headerlink" href="#welcome-to-islplot-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>islplot is a Python module that allows to create graphical plots of <a class="reference external" href="http://www.kotnet.org/~skimo/isl/">isl</a> sets and maps, which are of sets of
+integer points or relations between such sets that are bounded by piecewise
+quasi-affine constraints. They can be created and operated on in python using
+<a class="reference external" href="https://pypi.python.org/pypi/islpy/">islpy</a>.</p>
+<p>It currently provides the following functions:</p>
+<span class="target" id="module-islplot.plotter"></span><dl class="function">
+<dt id="islplot.plotter.plot_set_points">
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_set_points</tt><big>(</big><em>set_data</em>, <em>color='black'</em>, <em>size=10</em>, <em>marker='o'</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_set_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the individual points of a two dimensional isl set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>set_data</strong> &#8211; The islpy.Set to plot.</li>
+<li><strong>color</strong> &#8211; The color of the points.</li>
+<li><strong>size</strong> &#8211; The diameter of the points.</li>
+<li><strong>marker</strong> &#8211; The marker used to mark a point.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.plotter.plot_bset_shape">
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_bset_shape</tt><big>(</big><em>bset_data</em>, <em>show_vertices=True</em>, <em>color='gray'</em>, <em>vertex_color=None</em>, <em>vertex_marker='o'</em>, <em>vertex_size=10</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_bset_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an basic set, plot the shape formed by the constraints that define
+the basic set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bset_data</strong> &#8211; The basic set to plot.</li>
+<li><strong>show_vertices</strong> &#8211; Show the vertices at the corners of the basic set&#8217;s
+shape.</li>
+<li><strong>color</strong> &#8211; The backbround color of the shape.</li>
+<li><strong>vertex_color</strong> &#8211; The color of the vertex markers.</li>
+<li><strong>vertex_marker</strong> &#8211; The marker used to draw the vertices.</li>
+<li><strong>vertex_size</strong> &#8211; The size of the vertices.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.plotter.plot_set_shapes">
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_set_shapes</tt><big>(</big><em>set_data</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_set_shapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a set of concex shapes for the individual basic sets this set consists
+of.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>set_data</strong> &#8211; The set to plot.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.plotter.plot_map">
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_map</tt><big>(</big><em>map_data</em>, <em>color='black'</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a map from a two dimensional set to another two dimensional set this
+functions prints the relations in this map as arrows going from the input
+to the output element.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>map_data</strong> &#8211; The islpy.Map to plot.</li>
+<li><strong>color</strong> &#8211; The color of the arrows.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.plotter.plot_map_as_groups">
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_map_as_groups</tt><big>(</big><em>bmap</em>, <em>color='gray'</em>, <em>vertex_color=None</em>, <em>vertex_marker='o'</em>, <em>vertex_size=10</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_map_as_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a map in groups of convex sets</p>
+<p>This function expects a map that assigns each domain element a single
+group id, such that each group forms a convex set of points. This function
+plots now each group as such a convex shape.</p>
+<p>This is e.g. useful to illustrate a tiling that is given as a between
+iteration vectors to tile ids.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bmap</strong> &#8211; The map defining the groups of convex sets.</li>
+<li><strong>vertex_color</strong> &#8211; The color the vertices are plotted.</li>
+<li><strong>vertex_size</strong> &#8211; The size the vertices are plotted.</li>
+<li><strong>vertex_marker</strong> &#8211; The marker the vertices are plotted as.</li>
+<li><strong>color</strong> &#8211; The color the shapes are plotted.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to islplot&#8217;s documentation!</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">islplot 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Tobias Grosser.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
