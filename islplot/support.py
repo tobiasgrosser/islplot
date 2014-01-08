@@ -83,6 +83,9 @@ def bset_get_vertex_coordinates(bset_data):
     bset_data.compute_vertices().foreach_vertex(vertices.append)
     vertices = list(map(_isl_vertex_get_coordinates, vertices))
 
+    if len(vertices) <= 1:
+        return vertices
+
     # Sort the vertices in clockwise order.
     #
     # We select a 'center' point that lies within the convex hull of the

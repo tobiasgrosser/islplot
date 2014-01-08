@@ -36,5 +36,10 @@ class TestGetVertexCoordinates(unittest.TestCase):
         c = bset_get_vertex_coordinates(bset)
         assert c == [[0.0, 0.0], [0.0, 2.0], [9.0, 6.5], [9.0, 0.0]]
 
+    def test_2d_set_single_vertex(self):
+        bset = BasicSet("{[2,2]}")
+        c = bset_get_vertex_coordinates(bset)
+        assert c == [[2.0, 2.0]]
+
 if __name__ == '__main__':
     unittest.main()
