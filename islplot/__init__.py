@@ -2,4 +2,4 @@
 islplot
 """
 
-__all__ = ["plotter"]
+__all__ = ["plotter", "support"]
