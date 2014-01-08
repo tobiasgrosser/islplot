@@ -83,6 +83,9 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
         _plt.plot(dimX, dimY, vertex_marker, markersize=vertex_size,
                   color=vertex_color)
 
+    if len(vertices) == 0:
+        return
+
     import matplotlib.path as _matplotlib_path
     import matplotlib.patches as _matplotlib_patches
     Path = _matplotlib_path.Path
