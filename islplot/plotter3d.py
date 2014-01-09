@@ -66,8 +66,8 @@ def get_scene_start():
         renderer.setSize(window.innerWidth * 0.5, window.innerHeight * 0.5);
 
         var camera = new THREE.PerspectiveCamera(
-            45, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.z = 800;
+            45, window.innerWidth / window.innerHeight, 1, 500);
+        camera.position.z = 100;
 
         var scene = new THREE.Scene();
 
