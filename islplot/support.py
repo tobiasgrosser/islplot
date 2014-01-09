@@ -233,7 +233,7 @@ def isSubset(parent, child):
 
     return True
 
-def get_faces(basicSet):
+def bset_get_faces(basicSet):
     """
     Get a list of faces from a basic set
 
@@ -259,4 +259,69 @@ def get_faces(basicSet):
     faces = list(faces for faces,_ in itertools.groupby(faces))
     return faces
 
-__all__ = ['bset_get_vertex_coordinates', 'get_faces']
+def set_get_faces(set_data):
+    """
+    Get a list of faces from a set
+
+    Given a basic set we return a list of faces, where each face is represented
+    by a list of restricting vertices. The list of vertices is sorted in
+    clockwise (or counterclockwise) order around the center of the face.
+    Vertices may have rational coordinates. A vertice is represented as a three
+    tuple.
+    """
+
+    bsets = []
+    f = lambda x: bsets.append(x)
+    set_data.foreach_basic_set(f)
+    return list(map(bset_get_faces, bsets))
+
+
+def hash_vertex(vertex):
+    return 3*vertex[0] + 5 * vertex[1] + 7 * vertex[2]
+
+def get_vertex_to_index_map(vertexlist):
+    res = {}
+    i = 0
+    for v in vertexlist:
+        res[hash_vertex(v)] = i
+        i += 1
+    return res
+
+def translate_faces_to_indexes(faces, vertexmap):
+    """
+    Given a list of faces, translate the vertex defining it from their explit
+    offsets to their index as provided by the vertexmap, a mapping from vertices
+    to vertex indices.
+    """
+    new_faces = []
+    for face in faces:
+        new_face = []
+        for vertex in face:
+            new_face.append(vertexmap[hash_vertex(vertex)])
+        new_faces.append(new_face)
+    return new_faces
+
+def get_vertices_and_faces(set_data):
+    """
+    Given an isl set, return a tuple that contains the vertices and faces of
+    this set. The vertices are sorted in lexicographic order. In the faces,
+    the vertices are referenced by their position within the vertex list. The
+    vertices of a face are sorted such that connecting subsequent vertices
+    yields a convex form.
+    """
+    data = set_get_faces(set_data)
+    if len(data) == 0:
+        return ([], [])
+
+    faces = data[0]
+    vertices = [vertex for face in faces for vertex in face]
+    vertices.sort()
+    import itertools
+    vertices = list(vertices for vertices, _ in itertools.groupby(vertices))
+    vertexmap = get_vertex_to_index_map(vertices)
+
+    faces = translate_faces_to_indexes(faces, vertexmap)
+    return (vertices, faces)
+
+__all__ = ['bset_get_vertex_coordinates', 'bset_get_faces', 'set_get_faces',
+           'get_vertices_and_faces']
