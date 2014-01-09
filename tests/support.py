@@ -41,5 +41,40 @@ class TestGetVertexCoordinates(unittest.TestCase):
         c = bset_get_vertex_coordinates(bset)
         assert c == [[2.0, 2.0]]
 
+class Test_get_faces(unittest.TestCase):
+    def test_3d_empty(self):
+        bset = BasicSet("{[i,j,k]: 1=0}")
+        f = get_faces(bset)
+        assert f == []
+
+    def test_3d_point(self):
+        bset = BasicSet("{[i,j,k]: i = j = k = 0}")
+        f = get_faces(bset)
+        assert f == [[[0.0, 0.0, 0.0]]]
+
+    def test_3d_line(self):
+        bset = BasicSet("{[i,j,k]: i = j = 0 and 0 <= k <= 10}")
+        f = get_faces(bset)
+        assert f == [[[0.0, 0.0, 0.0], [0.0, 0.0, 10.0]]]
+
+    def test_3d_triangle(self):
+        bset = BasicSet("{[i,j,k]: 0 <= i,j <= 10 and i + j < 2 and k = 0}")
+        f = get_faces(bset)
+        assert f == [[[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]]
+
+    def test_3d_square(self):
+        bset = BasicSet("{[i,j,k]: 0 <= i,k <= 10 and j = 2}")
+        f = get_faces(bset)
+        assert f == [[[0.0, 2.0, 0.0], [10.0, 2.0, 0.0], [10.0, 2.0, 10.0], [0.0, 2.0, 10.0]]]
+
+    def test_3d_pyramid(self):
+        bset = BasicSet("{ [i, j, k] : 0 <= i,k,j and i + j + k <= 10}")
+        f = get_faces(bset)
+        assert f == [[[0.0, 0.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 10.0]],
+                     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 0.0, 10.0]],
+                     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0]],
+                     [[0.0, 0.0, 10.0], [10.0, 0.0, 0.0], [0.0, 10.0, 0.0]]]
+
+
 if __name__ == '__main__':
     unittest.main()
