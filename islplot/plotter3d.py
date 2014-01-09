@@ -12,7 +12,7 @@ def plot_set_3d_points(set_data):
     set_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
     for i in range(len(points)):
         v = points[i]
-        string += "var sphere_p%d = new THREE.Mesh(new THREE.SphereGeometry(0.2, 20, 20), new THREE.MeshNormalMaterial({color: 0x00ffff}));\n" % i
+        string += "var sphere_p%d = new THREE.Mesh(new THREE.SphereGeometry(0.2, 5, 5), new THREE.MeshNormalMaterial({color: 0x00ffff}));\n" % i
         string += "sphere_p%d.position.x = %d;\n" % (i, v[0])
         string += "sphere_p%d.position.y = %d;\n" % (i, v[1])
         string += "sphere_p%d.position.z = %d;\n" % (i, v[2])
