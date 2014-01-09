@@ -22,7 +22,6 @@ def plot_set_3d(set_data):
     string += "tile = new THREE.Mesh(tile, material)\n"
     string += "tile.doubleSided = true;\n"
     string += "tile.overdraw = true;\n"
-    string += "tile.rotation.x = Math.PI * 0.1;\n"
     string += "tile.normalsNeedUpdate = true;\n"
     string += "scene.add(tile);\n";
 
@@ -79,7 +78,6 @@ def get_scene_start():
             var time = (new Date()).getTime();
             var timeDiff = time - lastTime;
             var angleChange = angularSpeed * timeDiff * 2 * Math.PI / 1000;
-            //tile.rotation.y += angleChange;
             lastTime = time;
             renderer.render(scene, camera);
             requestAnimationFrame(function(){ animate(); });
@@ -87,7 +85,6 @@ def get_scene_start():
         }
         var ambient = new THREE.AmbientLight( 0x888888 );
         scene.add(ambient);
-        camera.tobias = "HALLO"
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.autoRotate = true;
 """
