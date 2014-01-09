@@ -1,5 +1,22 @@
 from islplot.support import *
 
+# color scheme
+# http://colorschemedesigner.com/#01400w0w0w0w0
+
+colors = []
+
+# red
+
+colors.append({'base': '0xff0700', 'light': '0xff7673', 'dark': '0xA60400'})
+
+# blue
+colors.append({'base': '0x3B14Af', 'light': '0x886E7D'})
+
+# yellow
+colors.append({'base': '0xFFD500', 'light': '0xFFE873'})
+
+# green
+colors.append({'base': '0x00C90D', 'light': '0x67E46F'})
 
 def plot_set_3d_points(set_data):
     """
@@ -7,12 +24,15 @@ def plot_set_3d_points(set_data):
 
     :param set_data: The islpy.Set to plot.
     """
+    color = colors[0]['light']
     string = ""
     points = []
     set_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
     for i in range(len(points)):
         v = points[i]
-        string += "var sphere_p%d = new THREE.Mesh(new THREE.SphereGeometry(0.2, 5, 5), new THREE.MeshNormalMaterial({color: 0x00ffff}));\n" % i
+        string += "var sphere_p%d = new THREE.Mesh(" % i
+        string += "new THREE.SphereGeometry(0.2, 15, 15), "
+        string +=  "new THREE.MeshLambertMaterial({color: %s , ambient: %s}));\n" % (color, color)
         string += "sphere_p%d.position.x = %d;\n" % (i, v[0])
         string += "sphere_p%d.position.y = %d;\n" % (i, v[1])
         string += "sphere_p%d.position.z = %d;\n" % (i, v[2])
@@ -20,10 +40,11 @@ def plot_set_3d_points(set_data):
     return string
 
 def plot_set_3d_vertices(vertices):
+    color = colors[0]['dark']
     string = ""
     for i in range(len(vertices)):
         v = vertices[i]
-        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.25, 20, 20), new THREE.MeshNormalMaterial());\n" % i
+        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.21, 20, 20), new THREE.MeshLambertMaterial({color: %s, ambient: %s}));\n" % (i, color, color)
         string += "sphere%d.position.x = %d;\n" % (i, v[0])
         string += "sphere%d.position.y = %d;\n" % (i, v[1])
         string += "sphere%d.position.z = %d;\n" % (i, v[2])
@@ -32,9 +53,10 @@ def plot_set_3d_vertices(vertices):
     return string
 
 def plot_set_3d_shape(vertices, faces):
+    color = colors[0]['base']
     string = "var tile; var material;"
     string = "tile = new THREE.Geometry();"
-    string += "material = new THREE.MeshLambertMaterial({color: 0x00ff00});"
+    string += "material = new THREE.MeshLambertMaterial({color: %s, ambient: %s });" % (color, color)
     string += "material.side = THREE.DoubleSide\n;"
 
     for v in vertices:
@@ -109,7 +131,7 @@ def get_scene_start(scale = 0.5):
 
         var scene = new THREE.Scene();
 
-        var directionalLight = new THREE.DirectionalLight(0xffffff);
+        var directionalLight = new THREE.DirectionalLight(0xaaaaaa);
         directionalLight.position.set(1, 1, 1).normalize();
         scene.add(directionalLight);
 
@@ -122,7 +144,7 @@ def get_scene_start(scale = 0.5):
             requestAnimationFrame(function(){ animate(); });
             controls.update();
         }
-        var ambient = new THREE.AmbientLight( 0x888888 );
+        var ambient = new THREE.AmbientLight( 0xcccccc );
         scene.add(ambient);
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.autoRotate = true;
