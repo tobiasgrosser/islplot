@@ -83,7 +83,7 @@ def get_html_page_end():
 """
     return string
 
-def get_scene_start():
+def get_scene_start(scale = 0.5):
     string = """
 <script language="javascript">
         var angularSpeed = 0.2;
@@ -100,7 +100,7 @@ def get_scene_start():
             renderer = new THREE.CanvasRenderer();
         }
 
-        renderer.setSize(window.innerWidth * 0.5, window.innerHeight * 0.5);
+        renderer.setSize(window.innerWidth * %f, window.innerHeight* %f);
         renderer.setClearColorHex( 0xffffff, 1 );
 
         var camera = new THREE.PerspectiveCamera(
@@ -126,7 +126,7 @@ def get_scene_start():
         scene.add(ambient);
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.autoRotate = true;
-"""
+""" % (scale, scale)
     return string
 
 def get_scene_end():
@@ -149,7 +149,7 @@ def plot_set_as_page(set_data):
     string += get_html_page_start()
     string += get_js_includes()
     string += """ <div id="islplotcontainer"></div> """
-    string += get_scene_start()
+    string += get_scene_start(scale=1.0)
     string += plot_set_3d(set_data)
     string += get_scene_end()
     string += get_html_page_end()
