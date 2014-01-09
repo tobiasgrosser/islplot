@@ -2,10 +2,6 @@ import matplotlib.pyplot as _plt
 import islpy as _islpy
 from islplot.support import *
 
-def _get_point_coordinates(point):
-    return (int(point.get_coordinate_val(_islpy.dim_type.set, 0).get_num_si()),
-            int(point.get_coordinate_val(_islpy.dim_type.set, 1).get_num_si()))
-
 def plot_set_points(set_data, color="black", size=10, marker="o"):
     """
     Plot the individual points of a two dimensional isl set.
@@ -16,7 +12,7 @@ def plot_set_points(set_data, color="black", size=10, marker="o"):
     :param marker: The marker used to mark a point.
     """
     points = []
-    set_data.foreach_point(lambda x: points.append(_get_point_coordinates(x)))
+    set_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
     dimX = [x[0] for x in points]
     dimY = [x[1] for x in points]
     _plt.plot(dimX, dimY, marker, markersize=size, color=color, lw=0)
@@ -50,8 +46,8 @@ def plot_map(map_data, color="black"):
         limited = map_data.intersect_range(_islpy.BasicSet.from_point(start))
         limited.domain().foreach_point(end_points.append)
         for end in end_points:
-                _plot_arrow(_get_point_coordinates(end),
-                            _get_point_coordinates(start),
+                _plot_arrow(get_point_coordinates(end),
+                            get_point_coordinates(start),
                             _plt, color=color)
 
 def plot_bset_shape(bset_data, show_vertices=True, color="gray",

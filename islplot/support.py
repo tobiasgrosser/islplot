@@ -1,6 +1,14 @@
 import islpy as _islpy
 from islpy import *
 
+def get_point_coordinates(point):
+    result = []
+    for i in range(point.space.dim(_islpy.dim_type.set)):
+        result.append(int(point.get_coordinate_val(_islpy.dim_type.set, i)
+            .get_num_si()))
+
+    return result
+
 def _get_value_of_dim(c):
     """
     Derive the value of a dimension from an appropriate constraint.
@@ -324,4 +332,4 @@ def get_vertices_and_faces(set_data):
     return (vertices, faces)
 
 __all__ = ['bset_get_vertex_coordinates', 'bset_get_faces', 'set_get_faces',
-           'get_vertices_and_faces']
+           'get_vertices_and_faces', 'get_point_coordinates']

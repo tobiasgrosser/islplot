@@ -1,10 +1,29 @@
 from islplot.support import *
 
+
+def plot_set_3d_points(set_data):
+    """
+    Plot the individual points of a three dimensional isl set.
+
+    :param set_data: The islpy.Set to plot.
+    """
+    string = ""
+    points = []
+    set_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
+    for i in range(len(points)):
+        v = points[i]
+        string += "var sphere_p%d = new THREE.Mesh(new THREE.SphereGeometry(0.2, 20, 20), new THREE.MeshNormalMaterial({color: 0x00ffff}));\n" % i
+        string += "sphere_p%d.position.x = %d;\n" % (i, v[0])
+        string += "sphere_p%d.position.y = %d;\n" % (i, v[1])
+        string += "sphere_p%d.position.z = %d;\n" % (i, v[2])
+        string += "scene.add(sphere_p%d);\n" % i
+    return string
+
 def plot_set_3d_vertices(vertices):
     string = ""
     for i in range(len(vertices)):
         v = vertices[i]
-        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 20), new THREE.MeshNormalMaterial());\n" % i
+        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.25, 20, 20), new THREE.MeshNormalMaterial());\n" % i
         string += "sphere%d.position.x = %d;\n" % (i, v[0])
         string += "sphere%d.position.y = %d;\n" % (i, v[1])
         string += "sphere%d.position.z = %d;\n" % (i, v[2])
@@ -43,6 +62,7 @@ def plot_set_3d(set_data):
     string = ""
     string += plot_set_3d_vertices(vertices)
     string += plot_set_3d_shape(vertices, faces)
+    string += plot_set_3d_points(set_data)
     return string
 
 def get_html_page_start():
@@ -84,7 +104,7 @@ def get_scene_start():
 
         var camera = new THREE.PerspectiveCamera(
             45, window.innerWidth / window.innerHeight, 1, 5000);
-        camera.position.z = 100;
+        camera.position.z = 20;
 
         var scene = new THREE.Scene();
 
