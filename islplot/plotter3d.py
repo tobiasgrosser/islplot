@@ -1,7 +1,18 @@
 from islplot.support import *
 
-def plot_set_3d(set_data):
-    vertices, faces = get_vertices_and_faces(set_data)
+def plot_set_3d_vertices(vertices):
+    string = ""
+    for i in range(len(vertices)):
+        v = vertices[i]
+        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 20), new THREE.MeshNormalMaterial());\n" % i
+        string += "sphere%d.position.x = %d;\n" % (i, v[0])
+        string += "sphere%d.position.y = %d;\n" % (i, v[1])
+        string += "sphere%d.position.z = %d;\n" % (i, v[2])
+        string += "scene.add(sphere%d);\n" % i
+
+    return string
+
+def plot_set_3d_shape(vertices, faces):
     string = "var tile; var material;"
     string = "tile = new THREE.Geometry();"
     string += "material = new THREE.MeshLambertMaterial({color: 0x00ff00});"
@@ -25,6 +36,13 @@ def plot_set_3d(set_data):
     string += "tile.normalsNeedUpdate = true;\n"
     string += "scene.add(tile);\n";
 
+    return string
+def plot_set_3d(set_data):
+    vertices, faces = get_vertices_and_faces(set_data)
+
+    string = ""
+    string += plot_set_3d_vertices(vertices)
+    string += plot_set_3d_shape(vertices, faces)
     return string
 
 def get_html_page_start():
@@ -65,7 +83,7 @@ def get_scene_start():
         renderer.setSize(window.innerWidth * 0.5, window.innerHeight * 0.5);
 
         var camera = new THREE.PerspectiveCamera(
-            45, window.innerWidth / window.innerHeight, 1, 500);
+            45, window.innerWidth / window.innerHeight, 1, 5000);
         camera.position.z = 100;
 
         var scene = new THREE.Scene();
