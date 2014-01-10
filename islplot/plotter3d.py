@@ -133,8 +133,9 @@ def get_html_page_end():
 """
     return string
 
-def get_scene_start(scale = 0.5):
+def get_scene_start(identifier, scale = 0.5):
     string = """
+<div id="islplotcontainer%d"></div>
 <script language="javascript">
         var angularSpeed = 0.2;
         var lastTime = 0;
@@ -176,22 +177,22 @@ def get_scene_start(scale = 0.5):
         scene.add(ambient);
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.autoRotate = false;
-""" % (scale, scale)
+""" % (identifier, scale, scale)
     return string
 
-def get_scene_end():
+def get_scene_end(identifier):
     string = """
         // Start the animation and attach the scene to our container.
         // The scene is attached with a slight delay as in the ipython notebook
         // the container may otherwise not yet be registered in the DOM.
 
         animate();
-        function register_islplotcontainer() {
-            document.getElementById("islplotcontainer").appendChild(renderer.domElement);
+        function register_islplotcontainer%d() {
+            document.getElementById("islplotcontainer%d").appendChild(renderer.domElement);
         }
-        setTimeout(register_islplotcontainer, 100);
+        setTimeout(register_islplotcontainer%d, 100);
 </script>
-"""
+""" % (identifier, identifier, identifier)
     return string
 
 def plot_axis():
@@ -244,15 +245,17 @@ def plot_set_3d(set_data, show_vertices=False, show_points=False,
     :param full_page: Include HTML header and footer to get a fully functional
                       HTML site.
     """
+
+    import random
+    identifier = random.randint(1,9999999999999)
     string = ""
     if full_page:
         string += get_html_page_start()
     string += get_js_includes()
-    string += """ <div id="islplotcontainer"></div> """
-    string += get_scene_start(scale=scale)
+    string += get_scene_start(identifier, scale=scale)
     string += _plot_set_3d(set_data, show_vertices, show_points, show_shape)
     string += plot_axis()
-    string += get_scene_end()
+    string += get_scene_end(identifier)
     if full_page:
         string += get_html_page_end()
     return string
