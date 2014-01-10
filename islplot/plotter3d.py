@@ -179,8 +179,46 @@ def get_scene_end():
 """
     return string
 
+def plot_axis():
+    string = r"""
+var cylinder = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.1, 0.1, 20, 40, 40, false),
+    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+scene.add(cylinder);
+var cylinder = new THREE.Mesh(
+    new THREE.CylinderGeometry(0, 0.3, 2, 40, 40, false),
+    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+cylinder.position.y = 10;
+scene.add(cylinder);
+
+var cylinder = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.1, 0.1, 20, 40, 40, false),
+    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+cylinder.rotation.z = Math.PI / 2;
+scene.add(cylinder);
+var cylinder = new THREE.Mesh(
+    new THREE.CylinderGeometry(0, 0.3, 2, 40, 40, false),
+    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+cylinder.rotation.z = -Math.PI / 2;
+cylinder.position.x = 10;
+scene.add(cylinder);
+
+var cylinder = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.1, 0.1, 20, 40, 40, false),
+    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+cylinder.rotation.x = Math.PI / 2;
+scene.add(cylinder);
+var cylinder = new THREE.Mesh(
+    new THREE.CylinderGeometry(0, 0.3, 2, 40, 40, false),
+    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+cylinder.rotation.x = Math.PI / 2;
+cylinder.position.z = 10;
+scene.add(cylinder);
+"""
+    return string
+
 def plot_set_3d(set_data, show_vertices=False, show_points=False,
-        show_shape=True, full_page=False, scale=0.7):
+        show_shape=True, full_page=False, scale=0.7, show_axes=True):
     """
     This function plots a three dimensional convex set.
 
@@ -198,6 +236,7 @@ def plot_set_3d(set_data, show_vertices=False, show_points=False,
     string += """ <div id="islplotcontainer"></div> """
     string += get_scene_start(scale=scale)
     string += _plot_set_3d(set_data, show_vertices, show_points, show_shape)
+    string += plot_axis()
     string += get_scene_end()
     if full_page:
         string += get_html_page_end()
