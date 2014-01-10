@@ -180,7 +180,7 @@ def get_scene_end():
     return string
 
 def plot_set_3d(set_data, show_vertices=False, show_points=False,
-        show_shape=True, full_page=False):
+        show_shape=True, full_page=False, scale=0.7):
     """
     This function plots a three dimensional convex set.
 
@@ -196,12 +196,13 @@ def plot_set_3d(set_data, show_vertices=False, show_points=False,
         string += get_html_page_start()
     string += get_js_includes()
     string += """ <div id="islplotcontainer"></div> """
-    string += get_scene_start(scale=1.0)
+    string += get_scene_start(scale=scale)
     string += _plot_set_3d(set_data, show_vertices, show_points, show_shape)
     string += get_scene_end()
     if full_page:
         string += get_html_page_end()
     return string
+
 def get_js_includes():
 
     string = """ <script language="JavaScript">"""
