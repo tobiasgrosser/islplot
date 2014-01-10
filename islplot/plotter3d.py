@@ -31,7 +31,7 @@ def plot_set_3d_points(set_data):
     for i in range(len(points)):
         v = points[i]
         string += "var sphere_p%d = new THREE.Mesh(" % i
-        string += "new THREE.SphereGeometry(0.2, 15, 15), "
+        string += "new THREE.SphereGeometry(0.2, 10, 10), "
         string +=  "new THREE.MeshLambertMaterial({color: %s , ambient: %s}));\n" % (color, color)
         string += "sphere_p%d.position.x = %d;\n" % (i, v[0])
         string += "sphere_p%d.position.y = %d;\n" % (i, v[1])
@@ -44,7 +44,7 @@ def plot_set_3d_vertices(vertices):
     string = ""
     for i in range(len(vertices)):
         v = vertices[i]
-        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.21, 20, 20), new THREE.MeshLambertMaterial({color: %s, ambient: %s}));\n" % (i, color, color)
+        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.21, 10, 10), new THREE.MeshLambertMaterial({color: %s, ambient: %s}));\n" % (i, color, color)
         string += "sphere%d.position.x = %d;\n" % (i, v[0])
         string += "sphere%d.position.y = %d;\n" % (i, v[1])
         string += "sphere%d.position.z = %d;\n" % (i, v[2])
