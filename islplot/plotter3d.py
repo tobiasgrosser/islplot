@@ -160,7 +160,7 @@ def get_scene_start(scale = 0.5):
         var ambient = new THREE.AmbientLight( 0xcccccc );
         scene.add(ambient);
         controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.autoRotate = true;
+        controls.autoRotate = false;
 """ % (scale, scale)
     return string
 
