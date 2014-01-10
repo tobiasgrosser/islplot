@@ -37504,7 +37504,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		var phi = Math.atan2( Math.sqrt( offset.x * offset.x + offset.z * offset.z ), offset.y );
 
-		if ( this.autoRotate ) {
+        // Added for islplot
+		// if ( this.autoRotate) {
+		if ( this.autoRotate && state === STATE.NONE) {
 
 			this.rotateLeft( getAutoRotationAngle() );
 
