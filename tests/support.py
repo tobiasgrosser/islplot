@@ -121,5 +121,14 @@ class Test_get_vertices_and_faces(unittest.TestCase):
         assert v == [[0.0, 0.0, 0.0], [0.0, 0.0, 10.0], [0.0, 10.0, 0.0], [10.0, 0.0, 0.0]]
         assert f == [[0, 2, 1], [0, 3, 1], [0, 3, 2], [1, 3, 2]]
 
+    def test_3d_rational_vertices(self):
+        bset = BasicSet("{ [i, j, k] : 0 <= i , j, k and i,k+2j <= 3 }")
+        v, f = get_vertices_and_faces(bset)
+        assert v == [[0.0, 0.0, 0.0], [0.0, 0.0, 3.0], [0.0, 1.5, 0.0],
+                     [3.0, 0.0, 0.0], [3.0, 0.0, 3.0], [3.0, 1.5, 0.0]]
+        assert f == [[0, 2, 1], [0, 3, 4, 1], [0, 3, 5, 2], [1, 4, 5, 2],
+                     [3, 5, 4]]
+
+
 if __name__ == '__main__':
     unittest.main()

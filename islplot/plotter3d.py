@@ -33,9 +33,9 @@ def plot_set_3d_points(set_data):
         string += "var sphere_p%d = new THREE.Mesh(" % i
         string += "new THREE.SphereGeometry(0.2, 10, 10), "
         string +=  "new THREE.MeshLambertMaterial({color: %s , ambient: %s}));\n" % (color, color)
-        string += "sphere_p%d.position.x = %d;\n" % (i, v[0])
-        string += "sphere_p%d.position.y = %d;\n" % (i, v[1])
-        string += "sphere_p%d.position.z = %d;\n" % (i, v[2])
+        string += "sphere_p%d.position.x = %f;\n" % (i, v[0])
+        string += "sphere_p%d.position.y = %f;\n" % (i, v[1])
+        string += "sphere_p%d.position.z = %f;\n" % (i, v[2])
         string += "scene.add(sphere_p%d);\n" % i
     return string
 
@@ -45,9 +45,9 @@ def plot_set_3d_vertices(vertices):
     for i in range(len(vertices)):
         v = vertices[i]
         string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.21, 10, 10), new THREE.MeshLambertMaterial({color: %s, ambient: %s}));\n" % (i, color, color)
-        string += "sphere%d.position.x = %d;\n" % (i, v[0])
-        string += "sphere%d.position.y = %d;\n" % (i, v[1])
-        string += "sphere%d.position.z = %d;\n" % (i, v[2])
+        string += "sphere%d.position.x = %f;\n" % (i, v[0])
+        string += "sphere%d.position.y = %f;\n" % (i, v[1])
+        string += "sphere%d.position.z = %f;\n" % (i, v[2])
         string += "scene.add(sphere%d);\n" % i
 
     return string
@@ -60,7 +60,7 @@ def plot_set_3d_shape(vertices, faces):
     string += "material.side = THREE.DoubleSide\n;"
 
     for v in vertices:
-        string += "tile.vertices.push( new THREE.Vector3( %d, %d, %d ) );\n" % (v[0], v[1], v[2])
+        string += "tile.vertices.push( new THREE.Vector3( %f, %f, %f ) );\n" % (v[0], v[1], v[2])
     for f in faces:
         for i in range(len(f) - 2):
             string += "tile.faces.push( new THREE.Face3( %d, %d, %d ) );\n" % (f[0],f[i+1], f[i+2])

@@ -108,9 +108,9 @@ def _is_vertex_on_constraint(vertex, constraint):
         prod = 1
         for j in range(dims):
             if i == j:
-                prod *= r[i][0]
+                prod *= r[j][0]
             else:
-                prod *= r[i][1]
+                prod *= r[j][1]
         summ += v[i] * prod
 
     constant = constraint.get_constant_val().get_num_si()
