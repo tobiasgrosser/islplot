@@ -230,10 +230,10 @@ def isSubset(parent, child):
     if len(parent) <= len(child):
         return False
     for c in child:
-        contained = True
+        contained = False
         for p in parent:
-            if p != c:
-                contained == False
+            if p == c:
+                contained = True
                 break
 
         if not contained:
