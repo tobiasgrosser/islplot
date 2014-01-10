@@ -52,7 +52,7 @@ def plot_set_3d_vertices(vertices):
 
     return string
 
-def plot_set_3d_shape(vertices, faces):
+def plot_set_3d_shape(vertices, faces, show_border):
     color = colors[0]['base']
     string = "var tile; var material;"
     string = "tile = new THREE.Geometry();"
@@ -61,9 +61,23 @@ def plot_set_3d_shape(vertices, faces):
 
     for v in vertices:
         string += "tile.vertices.push( new THREE.Vector3( %f, %f, %f ) );\n" % (v[0], v[1], v[2])
+
     for f in faces:
         for i in range(len(f) - 2):
             string += "tile.faces.push( new THREE.Face3( %d, %d, %d ) );\n" % (f[0],f[i+1], f[i+2])
+        for i in range(len(f)):
+            v0 = vertices[f[i]]
+            v1 = vertices[f[(i+1) % len(f)]]
+            string += """
+            var v0 = new THREE.Vector3( %f, %f, %f );
+            var v1 = new THREE.Vector3( %f, %f, %f );
+            geometry = new THREE.Geometry();
+            geometry.vertices.push(v0)
+            geometry.vertices.push(v1)
+            var material2 = new THREE.LineBasicMaterial( { color: 0x333333, opacity: 1, linewidth: 2 } );
+            line = new THREE.Line( geometry, material2, THREE.LinePieces );
+            scene.add(line);
+            """ % (v0[0], v0[1], v0[2], v1[0], v1[1], v1[2])
 
     string += "tile.computeBoundingSphere();\n"
     string += "tile.mergeVertices();\n";
@@ -80,7 +94,7 @@ def plot_set_3d_shape(vertices, faces):
     return string
 
 def _plot_set_3d(set_data, show_vertices=False, show_points=False,
-        show_shape=True):
+        show_shape=True, show_border=True):
     """
     This function plots a three dimensional convex set.
 
@@ -88,6 +102,7 @@ def _plot_set_3d(set_data, show_vertices=False, show_points=False,
     :param show_vertices: Show the vertices at the corner of the set.
     :param show_points: Show the full integer points contained in the set.
     :param show_shape: Show the faces that form the bounds of the set.
+    :param show_border: Show the border of a tile.
     """
     vertices, faces = get_vertices_and_faces(set_data)
 
@@ -95,7 +110,7 @@ def _plot_set_3d(set_data, show_vertices=False, show_points=False,
     if show_vertices:
         string += plot_set_3d_vertices(vertices)
     if show_shape:
-        string += plot_set_3d_shape(vertices, faces)
+        string += plot_set_3d_shape(vertices, faces, show_border)
     if show_points:
         string += plot_set_3d_points(set_data)
     return string
