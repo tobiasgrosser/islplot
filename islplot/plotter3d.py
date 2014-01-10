@@ -37694,6 +37694,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		}
 
+        // Added by islplot
+        event.preventDefault()
+
 	}
 
 	function onKeyDown( event ) {
