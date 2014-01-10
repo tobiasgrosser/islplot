@@ -78,13 +78,26 @@ def plot_set_3d_shape(vertices, faces):
     string += "scene.add(tile);\n";
 
     return string
-def plot_set_3d(set_data):
+
+def _plot_set_3d(set_data, show_vertices=False, show_points=False,
+        show_shape=True):
+    """
+    This function plots a three dimensional convex set.
+
+    :param set_data: The set to illustrate.
+    :param show_vertices: Show the vertices at the corner of the set.
+    :param show_points: Show the full integer points contained in the set.
+    :param show_shape: Show the faces that form the bounds of the set.
+    """
     vertices, faces = get_vertices_and_faces(set_data)
 
     string = ""
-    string += plot_set_3d_vertices(vertices)
-    string += plot_set_3d_shape(vertices, faces)
-    string += plot_set_3d_points(set_data)
+    if show_vertices:
+        string += plot_set_3d_vertices(vertices)
+    if show_shape:
+        string += plot_set_3d_shape(vertices, faces)
+    if show_points:
+        string += plot_set_3d_points(set_data)
     return string
 
 def get_html_page_start():
@@ -166,26 +179,29 @@ def get_scene_end():
 """
     return string
 
-def plot_set_as_page(set_data):
+def plot_set_3d(set_data, show_vertices=False, show_points=False,
+        show_shape=True, full_page=False):
+    """
+    This function plots a three dimensional convex set.
+
+    :param set_data: The set to illustrate.
+    :param show_vertices: Show the vertices at the corner of the set.
+    :param show_points: Show the full integer points contained in the set.
+    :param show_shape: Show the faces that form the bounds of the set.
+    :param full_page: Include HTML header and footer to get a fully functional
+                      HTML site.
+    """
     string = ""
-    string += get_html_page_start()
+    if full_page:
+        string += get_html_page_start()
     string += get_js_includes()
     string += """ <div id="islplotcontainer"></div> """
     string += get_scene_start(scale=1.0)
-    string += plot_set_3d(set_data)
+    string += _plot_set_3d(set_data, show_vertices, show_points, show_shape)
     string += get_scene_end()
-    string += get_html_page_end()
+    if full_page:
+        string += get_html_page_end()
     return string
-
-def plot_set_inline(set_data):
-    string = ""
-    string += get_js_includes()
-    string += """ <div id="islplotcontainer"></div> """
-    string += get_scene_start()
-    string += plot_set_3d(set_data)
-    string += get_scene_end()
-    return string
-
 def get_js_includes():
 
     string = """ <script language="JavaScript">"""
@@ -196,7 +212,7 @@ def get_js_includes():
 
     return string
 
-__all__ = ['plot_set_as_page', 'plot_set_inline']
+__all__ = ['plot_set_3d']
 
 
 # We include a set of javascript includes in this file.
