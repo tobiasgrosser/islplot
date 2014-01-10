@@ -199,23 +199,23 @@ def plot_axis():
 var cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0.1, 0.1, 20, 40, 40, false),
     new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+cylinder.rotation.z = Math.PI / 2;
 scene.add(cylinder);
 var cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0, 0.3, 2, 40, 40, false),
-    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
-cylinder.position.y = 10;
+    new THREE.MeshLambertMaterial({ color : 0xff0000, ambient : 0xff0000 }));
+cylinder.rotation.z = -Math.PI / 2;
+cylinder.position.x = 10;
 scene.add(cylinder);
 
 var cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0.1, 0.1, 20, 40, 40, false),
     new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
-cylinder.rotation.z = Math.PI / 2;
 scene.add(cylinder);
 var cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0, 0.3, 2, 40, 40, false),
-    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
-cylinder.rotation.z = -Math.PI / 2;
-cylinder.position.x = 10;
+    new THREE.MeshLambertMaterial({ color : 0x00ff00, ambient : 0x00ff00 }));
+cylinder.position.y = 10;
 scene.add(cylinder);
 
 var cylinder = new THREE.Mesh(
@@ -225,7 +225,7 @@ cylinder.rotation.x = Math.PI / 2;
 scene.add(cylinder);
 var cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0, 0.3, 2, 40, 40, false),
-    new THREE.MeshLambertMaterial({ color : 0.122222, ambient : 0x555555 }));
+    new THREE.MeshLambertMaterial({ color : 0x0000ff, ambient : 0x0000ff }));
 cylinder.rotation.x = Math.PI / 2;
 cylinder.position.z = 10;
 scene.add(cylinder);
