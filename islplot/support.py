@@ -332,5 +332,41 @@ def get_vertices_and_faces(set_data):
     faces = translate_faces_to_indexes(faces, vertexmap)
     return (vertices, faces)
 
+def _constraint_make_equality_set(x):
+    e = Constraint.equality_alloc(x.get_local_space())
+    e = e.set_constant_val(x.get_constant_val().get_num_si())
+
+    for i in range(x.space.dim(dim_type.set)):
+        e = e.set_coefficient_val(dim_type.set, i,
+                x.get_coefficient_val(dim_type.set, i).get_num_si())
+    for i in range(x.space.dim(dim_type.param)):
+        e = e.set_coefficient_val(dim_type.param, i,
+                x.get_coefficient_val(dim_type.param, i).get_num_si())
+
+    return BasicSet.universe(x.space).add_constraint(e)
+
+def bset_get_points(bset_data, only_hull=False):
+    """
+    Given a basic set return the points within this set
+
+    :param bset_data: The set that contains the points.
+    :param only_hull: Only return the point that are on the hull of the set.
+    """
+
+    if only_hull:
+          hull = [None]
+          hull[0] = Set.empty(bset_data.space)
+          def add(c):
+            const_eq = _constraint_make_equality_set(c)
+            const_eq = const_eq.intersect(bset_data)
+            hull[0] = hull[0].union(const_eq)
+          bset_data.foreach_constraint(add)
+          bset_data = hull[0]
+
+    points = []
+    bset_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
+    points = sorted(points)
+    return points
+
 __all__ = ['bset_get_vertex_coordinates', 'bset_get_faces', 'set_get_faces',
-           'get_vertices_and_faces', 'get_point_coordinates']
+           'get_vertices_and_faces', 'get_point_coordinates', 'bset_get_points']

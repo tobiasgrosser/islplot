@@ -18,16 +18,17 @@ colors.append({'base': '0xFFD500', 'light': '0xFFE873'})
 # green
 colors.append({'base': '0x00C90D', 'light': '0x67E46F'})
 
-def plot_set_3d_points(set_data):
+def plot_bset_3d_points(bset_data, only_hull):
     """
-    Plot the individual points of a three dimensional isl set.
+    Plot the individual points of a three dimensional isl basic set.
 
-    :param set_data: The islpy.Set to plot.
+    :param bset_data: The islpy.BasicSet to plot.
+    :param only_hull: Only plot the points on the hull of the basic set.
     """
+    bset_data = bset_data.convex_hull()
     color = colors[0]['light']
     string = ""
-    points = []
-    set_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
+    points = bset_get_points(bset_data, only_hull)
     for i in range(len(points)):
         v = points[i]
         string += "var sphere_p%d = new THREE.Mesh(" % i
@@ -94,7 +95,7 @@ def plot_set_3d_shape(vertices, faces, show_border):
     return string
 
 def _plot_set_3d(set_data, show_vertices=False, show_points=False,
-        show_shape=True, show_border=True):
+        show_shape=True, show_border=True, only_hull_points=True):
     """
     This function plots a three dimensional convex set.
 
@@ -103,6 +104,8 @@ def _plot_set_3d(set_data, show_vertices=False, show_points=False,
     :param show_points: Show the full integer points contained in the set.
     :param show_shape: Show the faces that form the bounds of the set.
     :param show_border: Show the border of a tile.
+    :param only_hull_points: Only show the points on the hull of the basic
+                             set.
     """
     vertices, faces = get_vertices_and_faces(set_data)
 
@@ -112,7 +115,7 @@ def _plot_set_3d(set_data, show_vertices=False, show_points=False,
     if show_shape:
         string += plot_set_3d_shape(vertices, faces, show_border)
     if show_points:
-        string += plot_set_3d_points(set_data)
+        string += plot_bset_3d_points(set_data, only_hull_points)
     return string
 
 def get_html_page_start():
@@ -234,7 +237,8 @@ scene.add(cylinder);
     return string
 
 def plot_set_3d(set_data, show_vertices=False, show_points=False,
-        show_shape=True, full_page=False, scale=0.7, show_axes=True):
+        show_shape=True, full_page=False, scale=0.7, show_axes=True,
+        only_hull_points=True):
     """
     This function plots a three dimensional convex set.
 
@@ -244,6 +248,8 @@ def plot_set_3d(set_data, show_vertices=False, show_points=False,
     :param show_shape: Show the faces that form the bounds of the set.
     :param full_page: Include HTML header and footer to get a fully functional
                       HTML site.
+    :param only_hull_points: Only show the points on the hull of the basic
+                             set.
     """
 
     import random
@@ -253,7 +259,8 @@ def plot_set_3d(set_data, show_vertices=False, show_points=False,
         string += get_html_page_start()
     string += get_js_includes()
     string += get_scene_start(identifier, scale=scale)
-    string += _plot_set_3d(set_data, show_vertices, show_points, show_shape)
+    string += _plot_set_3d(set_data, show_vertices, show_points, show_shape,
+                           only_hull_points)
     string += plot_axis()
     string += get_scene_end(identifier)
     if full_page:
