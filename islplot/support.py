@@ -284,15 +284,14 @@ def set_get_faces(set_data):
     return list(map(bset_get_faces, bsets))
 
 
-def hash_vertex(vertex):
-    h = hash((vertex[0], vertex[1], vertex[2]))
-    return (h)
+def make_tuple(vertex):
+    return (vertex[0], vertex[1], vertex[2])
 
 def get_vertex_to_index_map(vertexlist):
     res = {}
     i = 0
     for v in vertexlist:
-        res[hash_vertex(v)] = i
+        res[make_tuple(v)] = i
         i += 1
     return res
 
@@ -306,7 +305,7 @@ def translate_faces_to_indexes(faces, vertexmap):
     for face in faces:
         new_face = []
         for vertex in face:
-            new_face.append(vertexmap[hash_vertex(vertex)])
+            new_face.append(vertexmap[make_tuple(vertex)])
         new_faces.append(new_face)
     return new_faces
 
