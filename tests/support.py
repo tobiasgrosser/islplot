@@ -128,6 +128,15 @@ class Test_get_vertices_and_faces(unittest.TestCase):
                      [3.0, 0.0, 0.0], [3.0, 0.0, 3.0], [3.0, 1.5, 0.0]]
         assert f == [[0, 2, 1], [0, 3, 4, 1], [0, 3, 5, 2], [1, 4, 5, 2],
                      [3, 5, 4]]
+    def test_3d_rational_vertices2(self):
+        bset = BasicSet("{ [i0, i1, i2] : i0 >= 0 and i2 >= -i1 and i2 <= 15 - i0 - 2i1 and 2i1 >= 3 + i0 and 2i1 <= 15 + i0 and i2 <= -3 and i2 >= -15 }")
+        f1 = bset_get_faces(bset)
+        v, f = get_vertices_and_faces(bset)
+        assert v == [[0.0, 3.0, -3.0], [0.0, 7.5, -7.5], [0.0, 7.5, -3.0],
+                     [1.5, 8.25, -3.0], [3.0, 3.0, -3.0], [5.0, 10.0, -10.0],
+                     [7.5, 5.25, -3.0], [9.0, 6.0, -6.0]]
+        assert f == [[0, 2, 1], [0, 4, 6, 3, 2], [0, 4, 7, 5, 1], [1, 5, 3, 2],
+                     [3, 6, 7, 5], [4, 7, 6]]
 
 
 if __name__ == '__main__':

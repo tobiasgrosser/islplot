@@ -285,7 +285,8 @@ def set_get_faces(set_data):
 
 
 def hash_vertex(vertex):
-    return 3*vertex[0] + 5 * vertex[1] + 7 * vertex[2]
+    h = hash((vertex[0], vertex[1], vertex[2]))
+    return (h)
 
 def get_vertex_to_index_map(vertexlist):
     res = {}
