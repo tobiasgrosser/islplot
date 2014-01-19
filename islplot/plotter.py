@@ -167,9 +167,9 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
         plot_bset_shape(part_set, color=color, vertex_color=vertex_color,
                         vertex_size=vertex_size, vertex_marker=vertex_marker)
 
-def plot_domain(domain, dependences=None, tiling=None, tile_color="blue",
-                vertex_color = "black", vertex_size=10, vertex_marker="o",
-                background=True):
+def plot_domain(domain, dependences=None, tiling=None, space=None,
+                tile_color="blue", vertex_color = "black", vertex_size=10,
+                vertex_marker="o", background=True):
     """
     Plot an iteration space domain and related information.
 
@@ -178,6 +178,7 @@ def plot_domain(domain, dependences=None, tiling=None, tile_color="blue",
     :param dependences: The dependences between the different iterations
     :param tiling: A mapping from iteration space groups onto their corresponding
                    (possibly multi-dimensional) tile ID.
+    :param space: Show the data after mapping it to a new space.
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
@@ -185,6 +186,14 @@ def plot_domain(domain, dependences=None, tiling=None, tile_color="blue",
 
     _plt.autoscale(enable=True, tight=True)
     _plt.tight_layout()
+
+    if space:
+        domain = domain.apply(space)
+        if dependences:
+            dependences = dependences.apply_range(space)
+            dependences = dependences.apply_domain(space)
+        if tiling:
+            tiling = tiling.apply_domain(space)
 
     hull = get_rectangular_hull(domain, 1)
 
