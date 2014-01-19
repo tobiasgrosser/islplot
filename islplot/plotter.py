@@ -150,5 +150,46 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
         plot_bset_shape(part_set, color=color, vertex_color=vertex_color,
                         vertex_size=vertex_size, vertex_marker=vertex_marker)
 
+def plot_domain(domain, dependences=None, tiling=None, tile_color="blue",
+                vertex_color = "black", vertex_size=10, vertex_marker="o",
+                background=True):
+    """
+    Plot an iteration space domain and related information.
+
+
+    :param domain: The domain of the iteration space
+    :param dependences: The dependences between the different iterations
+    :param tiling: A mapping from iteration space groups onto their corresponding
+                   (possibly multi-dimensional) tile ID.
+    :param vertex_color: The color of the vertex markers.
+    :param vertex_marker: The marker used to draw the vertices.
+    :param vertex_size: The size of the vertices.
+    """
+
+    _plt.autoscale(enable=True, tight=True)
+    _plt.tight_layout()
+
+    hull = get_rectangular_hull(domain, 1)
+
+    if background:
+        plot_set_points(hull, color="lightgray", size=vertex_size,
+                        marker=vertex_marker)
+
+    plot_set_points(domain, color=vertex_color, size=vertex_size,
+                    marker=vertex_marker)
+
+    if dependences:
+        dependences = dependences.intersect_range(domain)
+        dependences = dependences.intersect_domain(domain)
+        if tiling:
+            same_tile = tiling.apply_range(tiling.reverse())
+            dependences = dependences.subtract(same_tile)
+        plot_map(dependences, color="gray")
+
+    if tiling:
+        tiling = tiling.intersect_domain(domain)
+        plot_map_as_groups(tiling, color=tile_color, vertex_color=vertex_color,
+                           vertex_size=vertex_size, vertex_marker=vertex_marker)
+
 __all__ = ['plot_set_points', 'plot_bset_shape', 'plot_set_shapes',
-           'plot_map', 'plot_map_as_groups']
+           'plot_map', 'plot_map_as_groups', 'plot_domain']
