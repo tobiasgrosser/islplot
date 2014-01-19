@@ -164,6 +164,7 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
 
         plot_set_points(part_set, color=vertex_color, size=vertex_size,
                         marker=vertex_marker)
+        part_set = part_set.remove_divs()
         plot_bset_shape(part_set, color=color, vertex_color=vertex_color,
                         vertex_size=vertex_size, vertex_marker=vertex_marker)
 
