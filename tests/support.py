@@ -137,6 +137,7 @@ class Test_get_vertices_and_faces(unittest.TestCase):
                      [7.5, 5.25, -3.0], [9.0, 6.0, -6.0]]
         assert f == [[0, 2, 1], [0, 4, 6, 3, 2], [0, 4, 7, 5, 1], [1, 5, 3, 2],
                      [3, 6, 7, 5], [4, 7, 6]]
+
 class Test_bset_get_points(unittest.TestCase):
     def test_cube(self):
         bset = BasicSet("{[i,j,k]: 0 <= i,j,k <= 2}")
@@ -167,6 +168,17 @@ class Test_bset_get_points(unittest.TestCase):
                      [2, 0, 0], [2, 0, 1], [2, 0, 2],
                      [2, 1, 0], [2, 1, 1], [2, 1, 2],
                      [2, 2, 0], [2, 2, 1], [2, 2, 2]]
+
+class Test_get_rectangular_hull(unittest.TestCase):
+    def test_triangular(self):
+        bset = BasicSet("{[i,j]: 0 <= i,j and i <= 2 and j + i <= 4}")
+        p = get_rectangular_hull(bset, offset=0)
+        assert p.is_equal(Set("{ [i, j] : 0 <= i <= 2 and 0 <= j <= 4 }"))
+
+    def test_triangular_offset(self):
+        bset = BasicSet("{[i,j]: 0 <= i,j and i <= 2 and j + i <= 4}")
+        p = get_rectangular_hull(bset, offset=2)
+        assert p.is_equal(Set("{ [i, j] : -2 <= i <= 4 and -2 <= j <= 6 }"))
 
 if __name__ == '__main__':
     unittest.main()

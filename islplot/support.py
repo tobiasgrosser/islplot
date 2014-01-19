@@ -367,5 +367,39 @@ def bset_get_points(bset_data, only_hull=False):
     points = sorted(points)
     return points
 
+def get_rectangular_hull(set_data, offset=0):
+    uset_data = Set.universe(set_data.get_space())
+
+    for dim in range(0,2):
+        ls = LocalSpace.from_space(set_data.get_space())
+        c = Constraint.inequality_alloc(ls)
+        incr = Map("{{[i]->[i+{0}]}}".format(offset))
+        decr = Map("{{[i]->[i-{0}]}}".format(offset))
+
+        dim_val = Aff.zero_on_domain(ls).set_coefficient_val(dim_type.in_, dim,
+                                                             1)
+        dim_val = PwAff.from_aff(dim_val)
+        dim_val = Map.from_pw_aff(dim_val)
+
+        space = dim_val.get_space()
+        dim_cst = Map.universe(space)
+        max_set = Set.from_pw_aff(set_data.dim_max(dim))
+        dim_cst = dim_cst.intersect_range(max_set)
+        dim_cst = dim_cst.apply_range(incr)
+
+        diff = Map.lex_le_map(dim_val, dim_cst)
+        uset_data = uset_data.intersect(diff.domain())
+
+        dim_cst = Map.universe(space)
+        min_set = Set.from_pw_aff(set_data.dim_min(dim))
+        dim_cst = dim_cst.intersect_range(min_set)
+        dim_cst = dim_cst.apply_range(decr)
+
+        diff = Map.lex_ge_map(dim_val, dim_cst)
+        uset_data = uset_data.intersect(diff.domain())
+
+    return uset_data
+
 __all__ = ['bset_get_vertex_coordinates', 'bset_get_faces', 'set_get_faces',
-           'get_vertices_and_faces', 'get_point_coordinates', 'bset_get_points']
+           'get_vertices_and_faces', 'get_point_coordinates', 'bset_get_points',
+           'get_rectangular_hull']
