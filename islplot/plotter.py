@@ -23,20 +23,26 @@ def _plot_arrow(start, end, graph, *args, **kwargs):
 
     :param start: The start position.
     :param end: The end position.
-    :param style: The line style to use (default is "->")
+    :param style: The line style to use (default is "->").
+    :param width: The width of the line.
+    :param color: The color of the line.
     """
     shrinkA = 10
     shrinkB = 10
     style = kwargs.pop("style", "->")
+    width = kwargs.pop("width", 1)
+    color = kwargs.pop("color", "black")
     graph.annotate("", xy=end, xycoords='data',
                 xytext=start, textcoords='data',
                 arrowprops=dict(arrowstyle=style,
                                 connectionstyle="arc3",
                                 shrinkA=shrinkA,
-                                shrinkB=shrinkB)
+                                shrinkB=shrinkB,
+                                linewidth=width,
+                                color=color)
                )
 
-def plot_map(map_data, edge_style="->", color="black"):
+def plot_map(map_data, edge_style="->", edge_width=1, color="black"):
     """
     Given a map from a two dimensional set to another two dimensional set this
     functions prints the relations in this map as arrows going from the input
@@ -45,6 +51,7 @@ def plot_map(map_data, edge_style="->", color="black"):
     :param map_data: The islpy.Map to plot.
     :param color: The color of the arrows.
     :param edge_style: The style used to plot the arrows.
+    :param edge_width: The width used to plot the arrows.
     """
     start_points = []
 
@@ -57,7 +64,8 @@ def plot_map(map_data, edge_style="->", color="black"):
         for end in end_points:
                 _plot_arrow(get_point_coordinates(end),
                             get_point_coordinates(start),
-                            _plt, color=color, style=edge_style)
+                            _plt, color=color, style=edge_style,
+                            width=edge_width)
 
 def plot_bset_shape(bset_data, show_vertices=True, color="gray",
                     vertex_color=None,
