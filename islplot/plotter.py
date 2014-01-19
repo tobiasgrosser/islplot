@@ -18,17 +18,25 @@ def plot_set_points(set_data, color="black", size=10, marker="o"):
     _plt.plot(dimX, dimY, marker, markersize=size, color=color, lw=0)
 
 def _plot_arrow(start, end, graph, *args, **kwargs):
+    """
+    Plot an arrow from start to end.
+
+    :param start: The start position.
+    :param end: The end position.
+    :param style: The line style to use (default is "->")
+    """
     shrinkA = 10
     shrinkB = 10
-    graph.annotate("", xy=start, xycoords='data',
-                xytext=end, textcoords='data',
-                arrowprops=dict(arrowstyle="<-",
+    style = kwargs.pop("style", "->")
+    graph.annotate("", xy=end, xycoords='data',
+                xytext=start, textcoords='data',
+                arrowprops=dict(arrowstyle=style,
                                 connectionstyle="arc3",
                                 shrinkA=shrinkA,
                                 shrinkB=shrinkB)
                )
 
-def plot_map(map_data, color="black"):
+def plot_map(map_data, edge_style="->", color="black"):
     """
     Given a map from a two dimensional set to another two dimensional set this
     functions prints the relations in this map as arrows going from the input
@@ -36,6 +44,7 @@ def plot_map(map_data, color="black"):
 
     :param map_data: The islpy.Map to plot.
     :param color: The color of the arrows.
+    :param edge_style: The style used to plot the arrows.
     """
     start_points = []
 
@@ -48,7 +57,7 @@ def plot_map(map_data, color="black"):
         for end in end_points:
                 _plot_arrow(get_point_coordinates(end),
                             get_point_coordinates(start),
-                            _plt, color=color)
+                            _plt, color=color, style=edge_style)
 
 def plot_bset_shape(bset_data, show_vertices=True, color="gray",
                     vertex_color=None,
