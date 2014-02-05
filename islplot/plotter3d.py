@@ -6,7 +6,6 @@ from islplot.support import *
 colors = []
 
 # red
-
 colors.append({'base': '0xff0700', 'light': '0xff7673', 'dark': '0xA60400'})
 
 # blue
@@ -18,6 +17,25 @@ colors.append({'base': '0xFFD500', 'light': '0xFFE873'})
 # green
 colors.append({'base': '0x00C90D', 'light': '0x67E46F'})
 
+def plot_point(point, color):
+    string = """
+        var sphere = new THREE.Mesh(
+            new THREE.SphereGeometry(0.2, 10, 10),
+            new THREE.MeshLambertMaterial({color: %s , ambient: %s}));
+        sphere.position.x = %f;
+        sphere.position.y = %f;
+        sphere.position.z = %f;
+        scene.add(sphere);
+    """ % (color, color, point[0], point[1], point[2])
+
+    return string
+
+def plot_points(points, color):
+    string = ""
+    for point in points:
+        string += plot_point(point, color)
+    return string
+
 def plot_bset_3d_points(bset_data, only_hull):
     """
     Plot the individual points of a three dimensional isl basic set.
@@ -27,31 +45,12 @@ def plot_bset_3d_points(bset_data, only_hull):
     """
     bset_data = bset_data.convex_hull()
     color = colors[0]['light']
-    string = ""
     points = bset_get_points(bset_data, only_hull)
-    for i in range(len(points)):
-        v = points[i]
-        string += "var sphere_p%d = new THREE.Mesh(" % i
-        string += "new THREE.SphereGeometry(0.2, 10, 10), "
-        string +=  "new THREE.MeshLambertMaterial({color: %s , ambient: %s}));\n" % (color, color)
-        string += "sphere_p%d.position.x = %f;\n" % (i, v[0])
-        string += "sphere_p%d.position.y = %f;\n" % (i, v[1])
-        string += "sphere_p%d.position.z = %f;\n" % (i, v[2])
-        string += "scene.add(sphere_p%d);\n" % i
-    return string
+    return plot_points(points, color)
 
 def plot_set_3d_vertices(vertices):
     color = colors[0]['dark']
-    string = ""
-    for i in range(len(vertices)):
-        v = vertices[i]
-        string += "var sphere%d = new THREE.Mesh(new THREE.SphereGeometry(0.21, 10, 10), new THREE.MeshLambertMaterial({color: %s, ambient: %s}));\n" % (i, color, color)
-        string += "sphere%d.position.x = %f;\n" % (i, v[0])
-        string += "sphere%d.position.y = %f;\n" % (i, v[1])
-        string += "sphere%d.position.z = %f;\n" % (i, v[2])
-        string += "scene.add(sphere%d);\n" % i
-
-    return string
+    return plot_points(vertices, color)
 
 def plot_set_3d_shape(vertices, faces, show_border):
     color = colors[0]['base']
