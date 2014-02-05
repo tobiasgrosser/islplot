@@ -400,6 +400,42 @@ def get_rectangular_hull(set_data, offset=0):
 
     return uset_data
 
+def cmp_points(a, b):
+    a = Set.from_point(a)
+    b = Set.from_point(b)
+    if a.lex_le_set(b).is_empty():
+        return 1
+    else:
+        return -1
+
+def cmp_to_key(mycmp):
+    'Convert a cmp= function into a key= function'
+    class Key(object):
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return Key
+
+def sort_points(points):
+    """
+    Given a list of points, sort them lexicographically.
+
+    :param points: The list of points that will be sorted.
+    """
+    return sorted(points, key=cmp_to_key(cmp_points))
+
+
 __all__ = ['bset_get_vertex_coordinates', 'bset_get_faces', 'set_get_faces',
            'get_vertices_and_faces', 'get_point_coordinates', 'bset_get_points',
-           'get_rectangular_hull']
+           'get_rectangular_hull', 'sort_points']

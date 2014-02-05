@@ -180,5 +180,31 @@ class Test_get_rectangular_hull(unittest.TestCase):
         p = get_rectangular_hull(bset, offset=2)
         assert p.is_equal(Set("{ [i, j] : -2 <= i <= 4 and -2 <= j <= 6 }"))
 
+class Test_sort_points(unittest.TestCase):
+    def test_empty(self):
+        res = sort_points([])
+        assert res == []
+
+    def test_single(self):
+        bset = BasicSet("{[0,1,2]}")
+        points = []
+        bset.foreach_point(points.append)
+        points = sort_points(points)
+        points = list(map(get_point_coordinates, points))
+        assert points == [[0,1,2]]
+
+    def test_single(self):
+        bset1 = BasicSet("{[x,y]: 0 <= x, y <= 1}")
+        bset2 = BasicSet("{[x,y]: -1 <= x, y <= 0}")
+        points = []
+        bset1.foreach_point(points.append)
+        bset2.foreach_point(points.append)
+        points = sort_points(points)
+        points = list(map(get_point_coordinates, points))
+        assert points == [[-1, -1], [-1, 0],
+                          [0, -1], [0, 0], [0, 0], [0, 1],
+                          [1, 0], [1, 1]]
+
+
 if __name__ == '__main__':
     unittest.main()
