@@ -393,3 +393,37 @@ def plot_bset(bset_data, color, name, addSpheres=True):
         plot_set_points(bset_data)
         bpy.context.scene.update()
     return tile
+
+def plot_all(schedule, dimensions_to_visualize, add_spheres=False,
+             get_color=None):
+    """
+    Given a schedule, we print the individual tiles.
+
+    TODO: This is just a quick hack. This code should be shared between the
+          different renderers.
+
+    :param schedule: The schedule to visualize.
+    :parma dimensions_to_visualize: The map used to define the dimensions that
+                                    will be visualized.
+    :param add_spheres: Print the individual elements in the set.
+    :param getColor: A function that takes a tile id and returns the
+                     corresponding tile color.
+
+
+    """
+    tileIDSet = schedule.range()
+
+    tileIDs = []
+    tileIDSet.foreach_point(tileIDs.append)
+    tileIDs = sort_points(tileIDs)
+
+    for tileID in tileIDs:
+        tileIDSet = Set.from_point(tileID)
+        tileSet = schedule.intersect_range(tileIDSet).domain()
+        tileSet = tileSet.apply(dimensions_to_visualize)
+        assert tileSet == tileSet.convex_hull()
+        tileSet = tileSet.convex_hull()
+
+        color = get_color(tileID)
+        name = "Tile " + str(get_point_coordinates(tileID))
+        plot_bset(tileSet, color, name, add_spheres)
