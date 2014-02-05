@@ -233,7 +233,8 @@ def print_axis(height, color, dim, unit_markers=True, text=False):
             ob.data.materials.append(white)
     return top
 
-def add_coordinate_system(size=[10,10,10], print_planes=True, unit_markers=True):
+def add_coordinate_system(size=[10,10,10], print_planes=[True, False, False],
+                          unit_markers=True):
     """
     Plot a coordinate system.
 
@@ -321,4 +322,74 @@ def print_face_borders(vertices, faces):
             b = vertices[face[(i+1)%len(face)]]
             print_line(a, b)
 
+def print_sphere(location):
+    """
+    Print a sphere at a given location.
 
+    :param location: The location of the sphere.
+
+    """
+
+    if not "islplot-tmp-sphere" in bpy.data.objects:
+        """
+        We only construct a sphere once and then copy subsequent spheres from
+        this one. This speeds up blender, as we avoid the additional checking
+        normally performed by the bpy.ops.mesh.* functions.
+        """
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=8,
+            size=0.1, view_align=False, enter_editmode=False,
+            location=(0,0,0), rotation=(0,0,0), layers=(True, False,
+                False, False, False, False, False, False, False,
+                False, False, False, False, False, False,
+                False, False, False, False, False))
+        sphere = bpy.context.active_object
+        sphere.name = "islplot-tmp-sphere"
+        sphere.select = False
+        sphere.data.materials.append(black)
+    else:
+        sphere = bpy.data.objects["islplot-tmp-sphere"]
+
+    l = location
+    ob = sphere.copy()
+    ob.name = "Sphere (%d, %d, %d)" % (l[0], l[1], l[2])
+    ob.location = l
+    ob.data = sphere.data.copy()
+    bpy.context.scene.objects.link(ob)
+    return ob
+
+def plot_bset_shape(bset_data, name, material):
+    """
+    Given an basic set, plot the shape formed by the constraints that define
+    the basic set.
+
+    :param bset_data: The basic set to plot.
+    :param name: The name the resulting mesh should have.
+    :param material: The material to use for the faces.
+    """
+    vertices, faces = get_vertices_and_faces(bset_data)
+    print_face_borders(vertices, faces)
+    bpy.ops.object.add(type='MESH')
+    ob = bpy.context.object
+    ob.name = name
+    me = ob.data
+    me.from_pydata(vertices, [], faces)
+    me.materials.append(material)
+    me.update()
+    ob.location[0] = 0
+    ob.location[1] = 0
+    ob.location[2] = 0
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+    return ob
+
+def plot_set_points(set_data):
+    points = bset_get_points(set_data, only_hull=True)
+    for point in points:
+        s = print_sphere(point)
+
+def plot_bset(bset_data, color, name, addSpheres=True):
+    tile = plot_bset_shape(bset_data, name, color)
+
+    if addSpheres:
+        plot_set_points(bset_data)
+        bpy.context.scene.update()
+    return tile
