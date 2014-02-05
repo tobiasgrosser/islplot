@@ -357,7 +357,7 @@ def print_sphere(location):
     bpy.context.scene.objects.link(ob)
     return ob
 
-def plot_bset_shape(bset_data, name, material):
+def plot_bset_shape(bset_data, name, material, borders=True):
     """
     Given an basic set, plot the shape formed by the constraints that define
     the basic set.
@@ -365,9 +365,11 @@ def plot_bset_shape(bset_data, name, material):
     :param bset_data: The basic set to plot.
     :param name: The name the resulting mesh should have.
     :param material: The material to use for the faces.
+    :param borders: Printer bordes of the shape.
     """
     vertices, faces = get_vertices_and_faces(bset_data)
-    print_face_borders(vertices, faces)
+    if borders:
+        print_face_borders(vertices, faces)
     bpy.ops.object.add(type='MESH')
     ob = bpy.context.object
     ob.name = name
@@ -386,15 +388,15 @@ def plot_set_points(set_data):
     for point in points:
         s = print_sphere(point)
 
-def plot_bset(bset_data, color, name, addSpheres=True):
-    tile = plot_bset_shape(bset_data, name, color)
+def plot_bset(bset_data, color, name, add_spheres=True, borders=True):
+    tile = plot_bset_shape(bset_data, name, color, borders)
 
-    if addSpheres:
+    if add_spheres:
         plot_set_points(bset_data)
         bpy.context.scene.update()
     return tile
 
-def plot_all(schedule, dimensions_to_visualize, add_spheres=False,
+def plot_all(schedule, dimensions_to_visualize, add_spheres=False, borders=True,
              get_color=None):
     """
     Given a schedule, we print the individual tiles.
@@ -426,4 +428,4 @@ def plot_all(schedule, dimensions_to_visualize, add_spheres=False,
 
         color = get_color(tileID)
         name = "Tile " + str(get_point_coordinates(tileID))
-        plot_bset(tileSet, color, name, add_spheres)
+        plot_bset(tileSet, color, name, add_spheres, borders)
