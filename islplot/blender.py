@@ -263,3 +263,62 @@ def add_coordinate_system(size=[10,10,10], print_planes=True, unit_markers=True)
 
     return axis
 
+
+def print_line(start, end):
+    """
+    Print a line between two points.
+    """
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=1, ring_count=1,
+        size=0.01, view_align=False, enter_editmode=False,
+        location=(0,0,0), rotation=(0,0,0), layers=(True, False,
+            False, False, False, False, False, False, False,
+            False, False, False, False, False, False,
+            False, False, False, False, False))
+    A = bpy.context.active_object
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=1, ring_count=1,
+        size=0.01, view_align=False, enter_editmode=False,
+        location=(0,0,0), rotation=(0,0,0), layers=(True, False,
+            False, False, False, False, False, False, False,
+            False, False, False, False, False, False,
+            False, False, False, False, False))
+    B = bpy.context.active_object
+    A.location = start
+    B.location = end
+
+    l = [A,B]
+    draw_curve = bpy.data.curves.new('draw_curve','CURVE')
+    draw_curve.dimensions = '3D'
+    spline = draw_curve.splines.new('BEZIER')
+    spline.bezier_points.add(len(l)-1)
+    curve = bpy.data.objects.new('curve',draw_curve)
+    bpy.context.scene.objects.link(curve)
+
+    # Curve settings for new curve
+    draw_curve.resolution_u = 64
+    draw_curve.fill_mode = 'FULL'
+    draw_curve.bevel_depth = 0.02
+    draw_curve.bevel_resolution = 0.02
+
+    # Assign bezier points to selection object locations
+    for i in range(len(l)):
+        p = spline.bezier_points[i]
+        p.co = l[i].location
+        p.handle_right_type="VECTOR"
+        p.handle_left_type="VECTOR"
+
+    curve.data.materials.append(black)
+
+def print_face_borders(vertices, faces):
+    """
+    Print lines along the edges of a set of faces.
+
+    :param faces: The faces for which to print the edges.
+    :param vertices: The locations of the vertices.
+    """
+    for face in faces:
+        for i in range(len(face)):
+            a = vertices[face[i]]
+            b = vertices[face[(i+1)%len(face)]]
+            print_line(a, b)
+
+
