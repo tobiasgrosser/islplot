@@ -277,20 +277,41 @@ def print_line(start, end):
     """
     Print a line between two points.
     """
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=1, ring_count=1,
-        size=0.01, view_align=False, enter_editmode=False,
-        location=(0,0,0), rotation=(0,0,0), layers=(True, False,
-            False, False, False, False, False, False, False,
-            False, False, False, False, False, False,
-            False, False, False, False, False))
-    A = bpy.context.active_object
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=1, ring_count=1,
-        size=0.01, view_align=False, enter_editmode=False,
-        location=(0,0,0), rotation=(0,0,0), layers=(True, False,
-            False, False, False, False, False, False, False,
-            False, False, False, False, False, False,
-            False, False, False, False, False))
-    B = bpy.context.active_object
+
+    if not "islplot-tmp-line-a" in bpy.data.objects:
+        """
+        We only construct a sphere once and then copy subsequent spheres from
+        this one. This speeds up blender, as we avoid the additional checking
+        normally performed by the bpy.ops.mesh.* functions.
+        """
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=1, ring_count=1,
+            size=0.01, view_align=False, enter_editmode=False,
+            location=(0,0,0), rotation=(0,0,0), layers=(True, False,
+                False, False, False, False, False, False, False,
+              False, False, False, False, False, False,
+                False, False, False, False, False))
+        A = bpy.context.active_object
+        A.name = "islplot-tmp-line-a"
+    else:
+        A = bpy.data.objects["islplot-tmp-line-a"]
+
+    if not "islplot-tmp-line-b" in bpy.data.objects:
+        """
+        We only construct a sphere once and then copy subsequent spheres from
+        this one. This speeds up blender, as we avoid the additional checking
+        normally performed by the bpy.ops.mesh.* functions.
+        """
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=1, ring_count=1,
+            size=0.01, view_align=False, enter_editmode=False,
+            location=(0,0,0), rotation=(0,0,0), layers=(True, False,
+                False, False, False, False, False, False, False,
+                False, False, False, False, False, False,
+                False, False, False, False, False))
+        B = bpy.context.active_object
+        B.name = "islplot-tmp-line-b"
+    else:
+        B = bpy.data.objects["islplot-tmp-line-b"]
+
     A.location = start
     B.location = end
 
