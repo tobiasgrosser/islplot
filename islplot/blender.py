@@ -27,7 +27,8 @@ def make_material(name, color_diffuse, color_specular, alpha):
 red = make_material('Red', (1,0.1,0.1), (1,1,1), 1)
 green = make_material('Green', (0,1,0), (1,1,1), 1)
 blue = make_material('Blue', (0,0.3,1), (1,1,1), 1)
-white = make_material('White', (1,1,1), (0.2,0.2,0.2), 0.4)
+white_trans = make_material('White', (1,1,1), (0.2,0.2,0.2), 0.4)
+white = make_material('White', (1,1,1), (1,1,1), 1)
 black = make_material('Black', (0,0,0), (1,1,1), 1)
 
 def remove_default_cube():
@@ -87,7 +88,7 @@ def render(filename):
     bpy.data.scenes['Scene'].render.filepath = filename
     bpy.ops.render.render( write_still=True )
 
-def print_plane(height0=10, height1=10, color=white, dim=0, units=True):
+def print_plane(height0=10, height1=10, color=white_trans, dim=0, units=True):
     """
     Print a plane.
 
@@ -223,8 +224,16 @@ def print_axis(height, color, dim, unit_markers=True, labels=False):
         ob.data.size = 2
         ob.data.materials.append(color)
 
+    if dim == 2:
+        rotation = (-1.5708,0,0)
+        rotation = (0,0,0)
+    if dim == 1:
+        rotation = (-1.5708,0,0)
+    if dim == 0:
+        rotation = (0, 1.5708, 0)
+
     if unit_markers:
-        for i in range(-height,height, 1):
+        for i in range(-height,height+1, 1):
             location = [0, 0, 0]
             location[dim] = i
             if i % 5 == 0:
