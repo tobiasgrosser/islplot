@@ -164,7 +164,7 @@ def print_plane(height0=10, height1=10, color=white, dim=0, units=True):
         ob = bpy.context.active_object
         ob.data.materials.append(black)
 
-def print_axis(height, color, dim, unit_markers=True, text=False):
+def print_axis(height, color, dim, unit_markers=True, labels=False):
     """
     Print the axis of a coordinate system.
 
@@ -172,7 +172,7 @@ def print_axis(height, color, dim, unit_markers=True, text=False):
     :param color: The color of the axis.
     :param dim: The dimension for which the axis is printed.
     :param unit_marks: If unit markers should be plotted.
-    :param text: If the name of the axis should be printed.
+    :param labels: The labels that sould be printed next to the axis
     """
     if dim == 2:
         rotation = (0,0,0)
@@ -194,28 +194,33 @@ def print_axis(height, color, dim, unit_markers=True, text=False):
     ob.data.materials.append(color)
     top = ob
 
-    if text:
+    if labels != False and (labels == True or labels[dim] != False):
         location=[0,0,0]
         if dim == 0:
             rotation = (1.5708,0, 2 * 1.5708)
-            location[2] = 0.2
-            location[1] = 0.2
+            location[2] = 0.3
+            location[1] = 0
             location[0] = height - 0.1
         if dim == 1:
             location[1] = height - 0.8
-            location[2] = 0.2
-            location[0] = 0.2
+            location[2] = 0.3
+            location[0] = 0
             rotation = (1.5708,0,1.5708)
         if dim == 2:
             rotation = (1.5708,0, 2 * 1.5708)
-            location[2] = height - 0.9
-            location[1] = 0.2
-            location[0] = 1
+            location[2] = height - 1.2
+            location[1] = 0
+            location[0] = -0.5
         bpy.ops.object.text_add(enter_editmode=True, location = location,
                     rotation=rotation)
         bpy.ops.font.delete()
-        bpy.ops.font.text_insert(text="i%d" % dim)
+        if labels[dim] == False:
+            text = "i%d" % dim
+        else:
+            text = labels[dim]
+        bpy.ops.font.text_insert(text=text)
         ob = bpy.context.active_object
+        ob.data.size = 2
         ob.data.materials.append(color)
 
     if unit_markers:
@@ -234,7 +239,7 @@ def print_axis(height, color, dim, unit_markers=True, text=False):
     return top
 
 def add_coordinate_system(size=[10,10,10], print_planes=[True, False, False],
-                          unit_markers=True):
+                          unit_markers=True, labels=False):
     """
     Plot a coordinate system.
 
@@ -247,11 +252,14 @@ def add_coordinate_system(size=[10,10,10], print_planes=[True, False, False],
                          axis.
     """
     axis = []
-    a = print_axis(size[2], black, dim=0, unit_markers=unit_markers)
+    dim = 0
+    a = print_axis(size[2], black, dim, unit_markers, labels)
     axis.append(a)
-    a = print_axis(size[1], black, dim=1, unit_markers=unit_markers)
+    dim = 1
+    a = print_axis(size[1], black, dim, unit_markers, labels)
     axis.append(a)
-    a = print_axis(size[0], black, dim=2, unit_markers=unit_markers)
+    dim = 2
+    a = print_axis(size[0], black, dim, unit_markers, labels)
     axis.append(a)
 
     if print_planes != False:
