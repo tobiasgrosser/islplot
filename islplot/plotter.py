@@ -186,9 +186,6 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     :param vertex_size: The size of the vertices.
     """
 
-    _plt.autoscale(enable=True, tight=True)
-    _plt.tight_layout()
-
     if space:
         domain = domain.apply(space)
         if dependences:

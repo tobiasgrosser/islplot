@@ -42,7 +42,8 @@ def _get_value_of_dim(c):
 
     constant = c.get_constant_val().get_num_si()
 
-    assert dimension != None, "Could not find a single dimension"
+    if dimension == None:
+      return (None, None)
 
     value = (-constant, coefficient)
 
@@ -62,6 +63,8 @@ def _vertex_to_rational_point(vertex):
 
     def accumulate(a):
         dim, val= _get_value_of_dim(a)
+        if dim == None:
+          return
         assert value[dim] == None, "Value already set"
         value[dim] = val
 
