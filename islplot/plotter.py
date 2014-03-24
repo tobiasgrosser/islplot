@@ -68,6 +68,7 @@ def plot_map(map_data, edge_style="->", edge_width=1, color="black"):
                             width=edge_width)
 
 def plot_bset_shape(bset_data, show_vertices=True, color="gray",
+                    alpha=1.0,
                     vertex_color=None,
                     vertex_marker="o", vertex_size=10):
     """
@@ -77,7 +78,8 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     :param bset_data: The basic set to plot.
     :param show_vertices: Show the vertices at the corners of the basic set's
                           shape.
-    :param color: The backbround color of the shape.
+    :param color: The background color of the shape.
+    :param alpha: The alpha value to use for the shape.
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
@@ -109,7 +111,7 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     pathdata.append((Path.CLOSEPOLY, (0, 0)))
     codes, verts = zip(*pathdata)
     path = Path(verts, codes)
-    patch = PathPatch(path, facecolor=color)
+    patch = PathPatch(path, facecolor=color, alpha=alpha)
     _plt.gca().add_patch(patch)
 
 def plot_set_shapes(set_data, *args, **kwargs):
@@ -125,7 +127,8 @@ def plot_set_shapes(set_data, *args, **kwargs):
     set_data.foreach_basic_set(lambda x: plot_bset_shape(x, **kwargs))
 
 
-def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
+def plot_map_as_groups(bmap, color="gray", alpha=1.0,
+                       vertex_color=None, vertex_marker="o",
                        vertex_size=10):
     """
     Plot a map in groups of convex sets
@@ -142,6 +145,7 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
     :param vertex_size: The size the vertices are plotted.
     :param vertex_marker: The marker the vertices are plotted as.
     :param color: The color the shapes are plotted.
+    :param alpha: The alpha the shapes are plotted.
     """
 
     if not vertex_color:
@@ -165,12 +169,14 @@ def plot_map_as_groups(bmap, color="gray", vertex_color=None, vertex_marker="o",
         plot_set_points(part_set, color=vertex_color, size=vertex_size,
                         marker=vertex_marker)
         part_set = part_set.remove_divs()
-        plot_bset_shape(part_set, color=color, vertex_color=vertex_color,
+        plot_bset_shape(part_set, color=color, alpha=alpha,
+                        vertex_color=vertex_color,
                         vertex_size=vertex_size, vertex_marker=vertex_marker,
                         show_vertices=False)
 
 def plot_domain(domain, dependences=None, tiling=None, space=None,
-                tile_color="blue", vertex_color = "black", vertex_size=10,
+                tile_color="blue",
+                vertex_color = "black", vertex_size=10,
                 vertex_marker="o", background=True):
     """
     Plot an iteration space domain and related information.
@@ -181,6 +187,7 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     :param tiling: A mapping from iteration space groups onto their corresponding
                    (possibly multi-dimensional) tile ID.
     :param space: Show the data after mapping it to a new space.
+    :param tile_color: The color to use for the tile shape.
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
