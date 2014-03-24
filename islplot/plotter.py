@@ -175,9 +175,11 @@ def plot_map_as_groups(bmap, color="gray", alpha=1.0,
                         show_vertices=False)
 
 def plot_domain(domain, dependences=None, tiling=None, space=None,
-                tile_color="blue",
+                tile_color="blue", dependence_color="black",
                 vertex_color = "black", vertex_size=10,
-                vertex_marker="o", background=True):
+                vertex_marker="o", background=True,
+                bg_vertex_color = "lightgray", bg_vertex_size=10,
+                bg_vertex_marker="o"):
     """
     Plot an iteration space domain and related information.
 
@@ -191,6 +193,9 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
+    :param bg_vertex_color: The color of the vertex markers.
+    :param bg_vertex_marker: The marker used to draw the vertices.
+    :param bg_vertex_size: The size of the vertices.
     """
 
     if space:
@@ -204,8 +209,8 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     hull = get_rectangular_hull(domain, 1)
 
     if background:
-        plot_set_points(hull, color="lightgray", size=vertex_size,
-                        marker=vertex_marker)
+        plot_set_points(hull, color=bg_vertex_color, size=bg_vertex_size,
+                        marker=bg_vertex_marker)
 
     plot_set_points(domain, color=vertex_color, size=vertex_size,
                     marker=vertex_marker)
@@ -216,7 +221,7 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
         if tiling:
             same_tile = tiling.apply_range(tiling.reverse())
             dependences = dependences.subtract(same_tile)
-        plot_map(dependences, color="gray")
+        plot_map(dependences, color=dependence_color)
 
     if tiling:
         tiling = tiling.intersect_domain(domain)
