@@ -18,6 +18,14 @@ It currently provides the following functions:
   :members:
   :undoc-members:
 
+.. automodule:: islplot.plotter3d
+  :members:
+  :undoc-members:
+
+.. automodule:: islplot.support
+  :members:
+  :undoc-members:
+
 Contents:
 
 .. toctree::
