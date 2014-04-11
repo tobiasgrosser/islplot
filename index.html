@@ -76,7 +76,7 @@ quasi-affine constraints. They can be created and operated on in python using
 
 <dl class="function">
 <dt id="islplot.plotter.plot_bset_shape">
-<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_bset_shape</tt><big>(</big><em>bset_data</em>, <em>show_vertices=True</em>, <em>color='gray'</em>, <em>vertex_color=None</em>, <em>vertex_marker='o'</em>, <em>vertex_size=10</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_bset_shape" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_bset_shape</tt><big>(</big><em>bset_data</em>, <em>show_vertices=True</em>, <em>color='gray'</em>, <em>alpha=1.0</em>, <em>vertex_color=None</em>, <em>vertex_marker='o'</em>, <em>vertex_size=10</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_bset_shape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given an basic set, plot the shape formed by the constraints that define
 the basic set.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -87,7 +87,8 @@ the basic set.</p>
 <li><strong>bset_data</strong> &#8211; The basic set to plot.</li>
 <li><strong>show_vertices</strong> &#8211; Show the vertices at the corners of the basic set&#8217;s
 shape.</li>
-<li><strong>color</strong> &#8211; The backbround color of the shape.</li>
+<li><strong>color</strong> &#8211; The background color of the shape.</li>
+<li><strong>alpha</strong> &#8211; The alpha value to use for the shape.</li>
 <li><strong>vertex_color</strong> &#8211; The color of the vertex markers.</li>
 <li><strong>vertex_marker</strong> &#8211; The marker used to draw the vertices.</li>
 <li><strong>vertex_size</strong> &#8211; The size of the vertices.</li>
@@ -115,7 +116,7 @@ of.</p>
 
 <dl class="function">
 <dt id="islplot.plotter.plot_map">
-<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_map</tt><big>(</big><em>map_data</em>, <em>color='black'</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_map" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_map</tt><big>(</big><em>map_data</em>, <em>edge_style='-&gt;'</em>, <em>edge_width=1</em>, <em>color='black'</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a map from a two dimensional set to another two dimensional set this
 functions prints the relations in this map as arrows going from the input
 to the output element.</p>
@@ -126,6 +127,8 @@ to the output element.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>map_data</strong> &#8211; The islpy.Map to plot.</li>
 <li><strong>color</strong> &#8211; The color of the arrows.</li>
+<li><strong>edge_style</strong> &#8211; The style used to plot the arrows.</li>
+<li><strong>edge_width</strong> &#8211; The width used to plot the arrows.</li>
 </ul>
 </td>
 </tr>
@@ -135,7 +138,7 @@ to the output element.</p>
 
 <dl class="function">
 <dt id="islplot.plotter.plot_map_as_groups">
-<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_map_as_groups</tt><big>(</big><em>bmap</em>, <em>color='gray'</em>, <em>vertex_color=None</em>, <em>vertex_marker='o'</em>, <em>vertex_size=10</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_map_as_groups" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_map_as_groups</tt><big>(</big><em>bmap</em>, <em>color='gray'</em>, <em>alpha=1.0</em>, <em>vertex_color=None</em>, <em>vertex_marker='o'</em>, <em>vertex_size=10</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_map_as_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a map in groups of convex sets</p>
 <p>This function expects a map that assigns each domain element a single
 group id, such that each group forms a convex set of points. This function
@@ -152,8 +155,149 @@ iteration vectors to tile ids.</p>
 <li><strong>vertex_size</strong> &#8211; The size the vertices are plotted.</li>
 <li><strong>vertex_marker</strong> &#8211; The marker the vertices are plotted as.</li>
 <li><strong>color</strong> &#8211; The color the shapes are plotted.</li>
+<li><strong>alpha</strong> &#8211; The alpha the shapes are plotted.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.plotter.plot_domain">
+<tt class="descclassname">islplot.plotter.</tt><tt class="descname">plot_domain</tt><big>(</big><em>domain</em>, <em>dependences=None</em>, <em>tiling=None</em>, <em>space=None</em>, <em>tile_color='blue'</em>, <em>dependence_color='black'</em>, <em>vertex_color='black'</em>, <em>vertex_size=10</em>, <em>vertex_marker='o'</em>, <em>background=True</em>, <em>bg_vertex_color='lightgray'</em>, <em>bg_vertex_size=10</em>, <em>bg_vertex_marker='o'</em><big>)</big><a class="headerlink" href="#islplot.plotter.plot_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot an iteration space domain and related information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>domain</strong> &#8211; The domain of the iteration space</li>
+<li><strong>dependences</strong> &#8211; The dependences between the different iterations</li>
+<li><strong>tiling</strong> &#8211; A mapping from iteration space groups onto their corresponding
+(possibly multi-dimensional) tile ID.</li>
+<li><strong>space</strong> &#8211; Show the data after mapping it to a new space.</li>
+<li><strong>tile_color</strong> &#8211; The color to use for the tile shape.</li>
+<li><strong>vertex_color</strong> &#8211; The color of the vertex markers.</li>
+<li><strong>vertex_marker</strong> &#8211; The marker used to draw the vertices.</li>
+<li><strong>vertex_size</strong> &#8211; The size of the vertices.</li>
+<li><strong>bg_vertex_color</strong> &#8211; The color of the vertex markers.</li>
+<li><strong>bg_vertex_marker</strong> &#8211; The marker used to draw the vertices.</li>
+<li><strong>bg_vertex_size</strong> &#8211; The size of the vertices.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="module-islplot.plotter3d"></span><dl class="function">
+<dt id="islplot.plotter3d.plot_set_3d">
+<tt class="descclassname">islplot.plotter3d.</tt><tt class="descname">plot_set_3d</tt><big>(</big><em>set_data</em>, <em>show_vertices=False</em>, <em>show_points=False</em>, <em>show_shape=True</em>, <em>full_page=False</em>, <em>scale=0.7</em>, <em>show_axes=True</em>, <em>only_hull_points=True</em><big>)</big><a class="headerlink" href="#islplot.plotter3d.plot_set_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots a three dimensional convex set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>set_data</strong> &#8211; The set to illustrate.</li>
+<li><strong>show_vertices</strong> &#8211; Show the vertices at the corner of the set.</li>
+<li><strong>show_points</strong> &#8211; Show the full integer points contained in the set.</li>
+<li><strong>show_shape</strong> &#8211; Show the faces that form the bounds of the set.</li>
+<li><strong>full_page</strong> &#8211; Include HTML header and footer to get a fully functional
+HTML site.</li>
+<li><strong>only_hull_points</strong> &#8211; Only show the points on the hull of the basic
+set.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="module-islplot.support"></span><dl class="function">
+<dt id="islplot.support.bset_get_vertex_coordinates">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">bset_get_vertex_coordinates</tt><big>(</big><em>bset_data</em><big>)</big><a class="headerlink" href="#islplot.support.bset_get_vertex_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a basic set return the list of vertices at the corners.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bset_data</strong> &#8211; The basic set to get the vertices from</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.bset_get_faces">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">bset_get_faces</tt><big>(</big><em>basicSet</em><big>)</big><a class="headerlink" href="#islplot.support.bset_get_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of faces from a basic set</p>
+<p>Given a basic set we return a list of faces, where each face is represented
+by a list of restricting vertices. The list of vertices is sorted in
+clockwise (or counterclockwise) order around the center of the face.
+Vertices may have rational coordinates. A vertice is represented as a three
+tuple.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.set_get_faces">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">set_get_faces</tt><big>(</big><em>set_data</em><big>)</big><a class="headerlink" href="#islplot.support.set_get_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of faces from a set</p>
+<p>Given a basic set we return a list of faces, where each face is represented
+by a list of restricting vertices. The list of vertices is sorted in
+clockwise (or counterclockwise) order around the center of the face.
+Vertices may have rational coordinates. A vertice is represented as a three
+tuple.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.get_vertices_and_faces">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">get_vertices_and_faces</tt><big>(</big><em>set_data</em><big>)</big><a class="headerlink" href="#islplot.support.get_vertices_and_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an isl set, return a tuple that contains the vertices and faces of
+this set. The vertices are sorted in lexicographic order. In the faces,
+the vertices are referenced by their position within the vertex list. The
+vertices of a face are sorted such that connecting subsequent vertices
+yields a convex form.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.get_point_coordinates">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">get_point_coordinates</tt><big>(</big><em>point</em><big>)</big><a class="headerlink" href="#islplot.support.get_point_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.bset_get_points">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">bset_get_points</tt><big>(</big><em>bset_data</em>, <em>only_hull=False</em><big>)</big><a class="headerlink" href="#islplot.support.bset_get_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a basic set return the points within this set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bset_data</strong> &#8211; The set that contains the points.</li>
+<li><strong>only_hull</strong> &#8211; Only return the point that are on the hull of the set.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.get_rectangular_hull">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">get_rectangular_hull</tt><big>(</big><em>set_data</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#islplot.support.get_rectangular_hull" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="islplot.support.sort_points">
+<tt class="descclassname">islplot.support.</tt><tt class="descname">sort_points</tt><big>(</big><em>points</em><big>)</big><a class="headerlink" href="#islplot.support.sort_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of points, sort them lexicographically.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; The list of points that will be sorted.</td>
 </tr>
 </tbody>
 </table>
