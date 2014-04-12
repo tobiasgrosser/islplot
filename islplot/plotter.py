@@ -27,22 +27,21 @@ def _plot_arrow(start, end, graph, *args, **kwargs):
     :param width: The width of the line.
     :param color: The color of the line.
     """
-    shrinkA = 10
-    shrinkB = 10
     style = kwargs.pop("style", "->")
     width = kwargs.pop("width", 1)
     color = kwargs.pop("color", "black")
+    shrink = kwargs.pop("shrink", 10)
     graph.annotate("", xy=end, xycoords='data',
                 xytext=start, textcoords='data',
                 arrowprops=dict(arrowstyle=style,
                                 connectionstyle="arc3",
-                                shrinkA=shrinkA,
-                                shrinkB=shrinkB,
+                                shrinkA=shrink,
+                                shrinkB=shrink,
                                 linewidth=width,
                                 color=color)
                )
 
-def plot_map(map_data, edge_style="->", edge_width=1, color="black"):
+def plot_map(map_data, edge_style="->", edge_width=1, color="black", shrink=10):
     """
     Given a map from a two dimensional set to another two dimensional set this
     functions prints the relations in this map as arrows going from the input
@@ -52,6 +51,8 @@ def plot_map(map_data, edge_style="->", edge_width=1, color="black"):
     :param color: The color of the arrows.
     :param edge_style: The style used to plot the arrows.
     :param edge_width: The width used to plot the arrows.
+    :param shrink: The distance before around the start/end which is not plotted
+                   to.
     """
     start_points = []
 
@@ -65,7 +66,7 @@ def plot_map(map_data, edge_style="->", edge_width=1, color="black"):
                 _plot_arrow(get_point_coordinates(end),
                             get_point_coordinates(start),
                             _plt, color=color, style=edge_style,
-                            width=edge_width)
+                            width=edge_width, shrink=shrink)
 
 def plot_bset_shape(bset_data, show_vertices=True, color="gray",
                     alpha=1.0,
@@ -111,7 +112,7 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     pathdata.append((Path.CLOSEPOLY, (0, 0)))
     codes, verts = zip(*pathdata)
     path = Path(verts, codes)
-    patch = PathPatch(path, facecolor=color, alpha=alpha)
+    patch = PathPatch(path, facecolor=color, alpha=alpha, linewidth=0)
     _plt.gca().add_patch(patch)
 
 def plot_set_shapes(set_data, *args, **kwargs):
@@ -175,11 +176,14 @@ def plot_map_as_groups(bmap, color="gray", alpha=1.0,
                         show_vertices=False)
 
 def plot_domain(domain, dependences=None, tiling=None, space=None,
-                tile_color="blue", dependence_color="black",
+                tile_color="blue",
                 vertex_color = "black", vertex_size=10,
                 vertex_marker="o", background=True,
                 bg_vertex_color = "lightgray", bg_vertex_size=10,
-                bg_vertex_marker="o"):
+                bg_vertex_marker="o",
+                dep_color="gray", dep_style="->", dep_width=1,
+                shrink=10
+                ):
     """
     Plot an iteration space domain and related information.
 
@@ -193,9 +197,15 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
+    :param background: If a background should be printed.
     :param bg_vertex_color: The color of the vertex markers.
     :param bg_vertex_marker: The marker used to draw the vertices.
     :param bg_vertex_size: The size of the vertices.
+    :param dep_color: The color used to plot the dependency arrows.
+    :param dep_style: The style used to plot the dependency arrows.
+    :param dep_width: The width used to plot the dependency arrows.
+    :param shrink: The distance before around the start/end of the dependences
+                   around which is not plotted.
     """
 
     if space:
@@ -221,7 +231,8 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
         if tiling:
             same_tile = tiling.apply_range(tiling.reverse())
             dependences = dependences.subtract(same_tile)
-        plot_map(dependences, color=dependence_color)
+        plot_map(dependences, color=dep_color, edge_style=dep_style,
+                 edge_width=dep_width, shrink=shrink)
 
     if tiling:
         tiling = tiling.intersect_domain(domain)
