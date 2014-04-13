@@ -9,46 +9,6 @@ def get_point_coordinates(point):
 
     return result
 
-def _get_value_of_dim(c):
-    """
-    Derive the value of a dimension from an appropriate constraint.
-
-    This function expects an equality constraint without any existentially
-    quantified dimensions for which at most one coefficient is non-zero. The
-    result is a tuple that gives the dimension on which this constraint applies,
-    as well as the nominator and denominator that define the rational value.
-
-    Example:
-        [i,j]: 2i = 7
-
-        => (0, (7,2))
-    """
-    assert c.is_equality(), "Equality constraint expected"
-    assert not c.is_div_constraint(), "Div constraints not allowed"
-    assert c.space.is_set(), "Only set spaces allowed"
-
-    dimension = None
-    coefficient = None
-
-    for i in range(c.space.dim(_islpy.dim_type.set)):
-        coef = c.get_coefficient_val(_islpy.dim_type.set, i).get_num_si()
-        if coef == 0:
-            continue
-
-        assert dimension == None, "More than one dimension with coefficient"
-
-        dimension = i
-        coefficient = coef
-
-    constant = c.get_constant_val().get_num_si()
-
-    if dimension == None:
-      return (None, None)
-
-    value = (-constant, coefficient)
-
-    return (dimension, value)
-
 def _vertex_to_rational_point(vertex):
     """
     Given an n-dimensional vertex, this function returns an n-tuple consisting
@@ -56,19 +16,15 @@ def _vertex_to_rational_point(vertex):
     specific dimension with the first element of the pair being the nominator
     and the second element being the denominator.
     """
-    rationalSet = vertex.get_expr()
+    expr = vertex.get_expr()
 
-    dimensions = rationalSet.dim(dim_type.set)
-    value = [None] * dimensions
+    value = []
 
-    def accumulate(a):
-        dim, val= _get_value_of_dim(a)
-        if dim == None:
-          return
-        assert value[dim] == None, "Value already set"
-        value[dim] = val
+    for i in range(expr.dim(dim_type.out)):
+        subexpr = expr.get_aff(i)
+        val = subexpr.get_constant_val()
+        value.append((val.get_num_si(), val.get_den_si()))
 
-    rationalSet.foreach_constraint(accumulate)
     return value
 
 def _vertex_get_coordinates(vertex):
