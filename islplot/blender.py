@@ -122,7 +122,17 @@ def print_plane(height0=10, height1=10, color=white_trans, dim=0, units=True):
         resize=(height0, 1, height1)
 
     bpy.ops.mesh.primitive_plane_add(location=(0,0,0), rotation=rotation)
-    bpy.ops.transform.resize(value=resize)
+
+#   FIXME: Re-enable resize
+#
+#   This resize operation is necessary to actually form the planes. It
+#   is disabled as this call currently fails with an invalid context
+#   error when running directly in python with blender loaded as module.
+#   This means we currently do not render those planes.
+#
+#   bpy.ops.transform.resize(value=resize)
+
+
     ob = bpy.context.active_object
     ob.data.materials.append(color)
 
