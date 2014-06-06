@@ -31,10 +31,24 @@ def _plot_arrow(start, end, graph, *args, **kwargs):
     width = kwargs.pop("width", 1)
     color = kwargs.pop("color", "black")
     shrink = kwargs.pop("shrink", 10)
-    graph.annotate("", xy=end, xycoords='data',
+
+    if (start == end):
+        a,b = start
+        graph.annotate("", xy=(a, b+.15), xycoords='data',
                 xytext=start, textcoords='data',
                 arrowprops=dict(arrowstyle=style,
                                 connectionstyle="arc3",
+                                shrinkA=0,
+                                shrinkB=0,
+                                linewidth=width,
+                                color=color)
+               )
+        return
+
+    graph.annotate("", xy=end, xycoords='data',
+                xytext=start, textcoords='data',
+                arrowprops=dict(arrowstyle=style,
+                                connectionstyle="arc",
                                 shrinkA=shrink,
                                 shrinkB=shrink,
                                 linewidth=width,
