@@ -231,9 +231,9 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
         if tiling:
             tiling = tiling.apply_domain(space)
 
-    hull = get_rectangular_hull(domain, 1)
 
     if background:
+        hull = get_rectangular_hull(domain, 1)
         plot_set_points(hull, color=bg_vertex_color, size=bg_vertex_size,
                         marker=bg_vertex_marker)
 
