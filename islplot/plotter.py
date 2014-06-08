@@ -190,7 +190,7 @@ def plot_map_as_groups(bmap, color="gray", alpha=1.0,
                         show_vertices=False)
 
 def plot_domain(domain, dependences=None, tiling=None, space=None,
-                tile_color="blue",
+                tile_color="blue", tile_alpha=1,
                 vertex_color = "black", vertex_size=10,
                 vertex_marker="o", background=True,
                 bg_vertex_color = "lightgray", bg_vertex_size=10,
@@ -208,6 +208,7 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
                    (possibly multi-dimensional) tile ID.
     :param space: Show the data after mapping it to a new space.
     :param tile_color: The color to use for the tile shape.
+    :param tile_alpha: The alpha value used for the tile background.
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
@@ -251,7 +252,8 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     if tiling:
         tiling = tiling.intersect_domain(domain)
         plot_map_as_groups(tiling, color=tile_color, vertex_color=vertex_color,
-                           vertex_size=vertex_size, vertex_marker=vertex_marker)
+                           vertex_size=vertex_size, vertex_marker=vertex_marker,
+                           alpha=tile_alpha)
 
 __all__ = ['plot_set_points', 'plot_bset_shape', 'plot_set_shapes',
            'plot_map', 'plot_map_as_groups', 'plot_domain']
