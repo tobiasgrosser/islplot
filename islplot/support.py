@@ -1,11 +1,11 @@
 import islpy as _islpy
 from islpy import *
 
-def get_point_coordinates(point):
+def get_point_coordinates(point, scale=1):
     result = []
     for i in range(point.space.dim(_islpy.dim_type.set)):
         result.append(int(point.get_coordinate_val(_islpy.dim_type.set, i)
-            .get_num_si()))
+            .get_num_si())/ scale)
 
     return result
 
@@ -27,7 +27,7 @@ def _vertex_to_rational_point(vertex):
 
     return value
 
-def _vertex_get_coordinates(vertex):
+def _vertex_get_coordinates(vertex, scale=1):
     """
     Get the coordinates of the an isl vertex as a tuple of float values.
 
@@ -44,7 +44,7 @@ def _vertex_get_coordinates(vertex):
     :param vertex: The vertex from which we extract the coordinates.
     """
     r = _vertex_to_rational_point(vertex)
-    return [(1.0 * x[0] / x[1]) for x in r]
+    return [(1.0 * x[0] / x[1])/scale for x in r]
 
 def _is_vertex_on_constraint(vertex, constraint):
     """
@@ -78,7 +78,7 @@ def _is_vertex_on_constraint(vertex, constraint):
     return int(summ) == 0
 
 
-def bset_get_vertex_coordinates(bset_data):
+def bset_get_vertex_coordinates(bset_data, scale=1):
     """
     Given a basic set return the list of vertices at the corners.
 
@@ -88,7 +88,8 @@ def bset_get_vertex_coordinates(bset_data):
     # Get the vertices.
     vertices = []
     bset_data.compute_vertices().foreach_vertex(vertices.append)
-    vertices = list(map(_vertex_get_coordinates, vertices))
+    f = lambda x: _vertex_get_coordinates(x, scale)
+    vertices = list(map(f, vertices))
 
     if len(vertices) <= 1:
         return vertices
@@ -303,12 +304,13 @@ def _constraint_make_equality_set(x):
 
     return BasicSet.universe(x.space).add_constraint(e)
 
-def bset_get_points(bset_data, only_hull=False):
+def bset_get_points(bset_data, only_hull=False, scale=1):
     """
     Given a basic set return the points within this set
 
     :param bset_data: The set that contains the points.
     :param only_hull: Only return the point that are on the hull of the set.
+    :param scale: Scale the values.
     """
 
     if only_hull:
@@ -322,7 +324,8 @@ def bset_get_points(bset_data, only_hull=False):
           bset_data = hull[0]
 
     points = []
-    bset_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
+    f = lambda x: points.append(get_point_coordinates(x, scale))
+    bset_data.foreach_point(f)
     points = sorted(points)
     return points
 

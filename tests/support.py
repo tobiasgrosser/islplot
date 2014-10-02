@@ -139,6 +139,16 @@ class Test_get_vertices_and_faces(unittest.TestCase):
                      [3, 6, 7, 5], [4, 7, 6]]
 
 class Test_bset_get_points(unittest.TestCase):
+    def test_scale(self):
+        bset = BasicSet("{[i]: 0 <= i  <= 1}")
+        p = bset_get_points(bset, scale=10)
+        assert p == [[0], [0.1]]
+
+    def test_scale_2(self):
+        bset = BasicSet("{[i]: 0 <= i  <= 1}")
+        p = bset_get_points(bset, scale=20)
+        assert p == [[0], [0.05]]
+
     def test_cube(self):
         bset = BasicSet("{[i,j,k]: 0 <= i,j,k <= 2}")
         p = bset_get_points(bset)

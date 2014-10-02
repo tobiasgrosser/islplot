@@ -2,7 +2,7 @@ import matplotlib.pyplot as _plt
 import islpy as _islpy
 from islplot.support import *
 
-def plot_set_points(set_data, color="black", size=10, marker="o"):
+def plot_set_points(set_data, color="black", size=10, marker="o", scale=1):
     """
     Plot the individual points of a two dimensional isl set.
 
@@ -10,9 +10,10 @@ def plot_set_points(set_data, color="black", size=10, marker="o"):
     :param color: The color of the points.
     :param size: The diameter of the points.
     :param marker: The marker used to mark a point.
+    :param scale: Scale the values.
     """
     points = []
-    set_data.foreach_point(lambda x: points.append(get_point_coordinates(x)))
+    points = bset_get_points(set_data, scale=scale)
     dimX = [x[0] for x in points]
     dimY = [x[1] for x in points]
     _plt.plot(dimX, dimY, marker, markersize=size, color=color, lw=0)
@@ -85,7 +86,8 @@ def plot_map(map_data, edge_style="->", edge_width=1, color="black", shrink=10):
 def plot_bset_shape(bset_data, show_vertices=True, color="gray",
                     alpha=1.0,
                     vertex_color=None,
-                    vertex_marker="o", vertex_size=10):
+                    vertex_marker="o", vertex_size=10,
+                    scale=1):
     """
     Given an basic set, plot the shape formed by the constraints that define
     the basic set.
@@ -98,6 +100,7 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
+    :param scale: Scale the values.
     """
 
     assert bset_data.is_bounded(), "Expected bounded set"
@@ -105,7 +108,7 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     if not vertex_color:
         vertex_color = color
 
-    vertices = bset_get_vertex_coordinates(bset_data)
+    vertices = bset_get_vertex_coordinates(bset_data, scale=scale)
 
     if show_vertices:
         dimX = [x[0] for x in vertices]
@@ -144,7 +147,7 @@ def plot_set_shapes(set_data, *args, **kwargs):
 
 def plot_map_as_groups(bmap, color="gray", alpha=1.0,
                        vertex_color=None, vertex_marker="o",
-                       vertex_size=10):
+                       vertex_size=10, scale=1):
     """
     Plot a map in groups of convex sets
 
@@ -182,12 +185,12 @@ def plot_map_as_groups(bmap, color="gray", alpha=1.0,
         part_set = part_set_convex
 
         plot_set_points(part_set, color=vertex_color, size=vertex_size,
-                        marker=vertex_marker)
+                        marker=vertex_marker, scale=scale)
         part_set = part_set.remove_divs()
         plot_bset_shape(part_set, color=color, alpha=alpha,
                         vertex_color=vertex_color,
                         vertex_size=vertex_size, vertex_marker=vertex_marker,
-                        show_vertices=False)
+                        show_vertices=False, scale=scale)
 
 def plot_domain(domain, dependences=None, tiling=None, space=None,
                 tile_color="blue", tile_alpha=1,
