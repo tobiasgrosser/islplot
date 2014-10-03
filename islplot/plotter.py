@@ -56,7 +56,8 @@ def _plot_arrow(start, end, graph, *args, **kwargs):
                                 color=color)
                )
 
-def plot_map(map_data, edge_style="->", edge_width=1, color="black", shrink=10):
+def plot_map(map_data, edge_style="->", edge_width=1, color="black", shrink=10,
+             scale = 1):
     """
     Given a map from a two dimensional set to another two dimensional set this
     functions prints the relations in this map as arrows going from the input
@@ -68,6 +69,7 @@ def plot_map(map_data, edge_style="->", edge_width=1, color="black", shrink=10):
     :param edge_width: The width used to plot the arrows.
     :param shrink: The distance before around the start/end which is not plotted
                    to.
+    :param scale: Scale the values.
     """
     start_points = []
 
@@ -78,8 +80,8 @@ def plot_map(map_data, edge_style="->", edge_width=1, color="black", shrink=10):
         limited = map_data.intersect_range(_islpy.BasicSet.from_point(start))
         limited.domain().foreach_point(end_points.append)
         for end in end_points:
-                _plot_arrow(get_point_coordinates(end),
-                            get_point_coordinates(start),
+                _plot_arrow(get_point_coordinates(end, scale),
+                            get_point_coordinates(start, scale),
                             _plt, color=color, style=edge_style,
                             width=edge_width, shrink=shrink)
 
