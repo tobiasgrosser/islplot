@@ -87,7 +87,7 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
                     alpha=1.0,
                     vertex_color=None,
                     vertex_marker="o", vertex_size=10,
-                    scale=1):
+                    scale=1, border=0):
     """
     Given an basic set, plot the shape formed by the constraints that define
     the basic set.
@@ -100,6 +100,8 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     :param vertex_color: The color of the vertex markers.
     :param vertex_marker: The marker used to draw the vertices.
     :param vertex_size: The size of the vertices.
+    :param border: Increase the size of the area filled with the background
+                   by the value given as 'border'.
     :param scale: Scale the values.
     """
 
@@ -128,8 +130,38 @@ def plot_bset_shape(bset_data, show_vertices=True, color="gray",
     pathdata = [(code, tuple(coord)) for code, coord in zip(codes, vertices)]
     pathdata.append((Path.CLOSEPOLY, (0, 0)))
     codes, verts = zip(*pathdata)
+    import matplotlib.transforms as _matplotlib_transforms
+    t = _matplotlib_transforms.Affine2D().translate(1, 0)
     path = Path(verts, codes)
-    patch = PathPatch(path, facecolor=color, alpha=alpha, linewidth=0)
+
+    linewidth = 0
+    fill = True
+
+    if len(vertices) == 2:
+        linewidth = 2;
+        fill = False;
+
+    pathes = []
+    import math
+    steps = 200
+    for i in range(steps):
+        pi = i * 2 * math.pi/steps
+        offset = border
+        x = math.sin(pi) * offset
+        y = math.cos(pi) * offset
+        t = _matplotlib_transforms.Affine2D().translate(x,y)
+        pathT = path.transformed(t)
+        pathes.append(pathT)
+
+    for p in pathes:
+        path = _matplotlib_path.Path.make_compound_path(path, p)
+
+    if len(vertices) == 1:
+        patch = _matplotlib_patches.Circle(vertices[0], border, color=color,
+                                        alpha=alpha)
+    else:
+        patch = PathPatch(path, alpha=alpha, linewidth=linewidth,
+            color=color, fill=fill)
     _plt.gca().add_patch(patch)
 
 def plot_set_shapes(set_data, *args, **kwargs):
@@ -147,7 +179,7 @@ def plot_set_shapes(set_data, *args, **kwargs):
 
 def plot_map_as_groups(bmap, color="gray", alpha=1.0,
                        vertex_color=None, vertex_marker="o",
-                       vertex_size=10, scale=1):
+                       vertex_size=10, scale=1, border=0.25):
     """
     Plot a map in groups of convex sets
 
@@ -163,6 +195,8 @@ def plot_map_as_groups(bmap, color="gray", alpha=1.0,
     :param vertex_size: The size the vertices are plotted.
     :param vertex_marker: The marker the vertices are plotted as.
     :param color: The color the shapes are plotted.
+    :param border: Increase the size of the area filled with the background
+                   by the value given as 'border'.
     :param alpha: The alpha the shapes are plotted.
     """
 
@@ -190,7 +224,7 @@ def plot_map_as_groups(bmap, color="gray", alpha=1.0,
         plot_bset_shape(part_set, color=color, alpha=alpha,
                         vertex_color=vertex_color,
                         vertex_size=vertex_size, vertex_marker=vertex_marker,
-                        show_vertices=False, scale=scale)
+                        show_vertices=False, scale=scale, border=border)
 
 def plot_domain(domain, dependences=None, tiling=None, space=None,
                 tile_color="blue", tile_alpha=1,
@@ -199,7 +233,7 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
                 bg_vertex_color = "lightgray", bg_vertex_size=10,
                 bg_vertex_marker="o",
                 dep_color="gray", dep_style="->", dep_width=1,
-                shrink=10
+                shrink=10, border=0.25
                 ):
     """
     Plot an iteration space domain and related information.
@@ -224,6 +258,8 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
     :param dep_width: The width used to plot the dependency arrows.
     :param shrink: The distance before around the start/end of the dependences
                    around which is not plotted.
+    :param border: Increase the size of the area filled with the background
+                   by the value given as 'border'.
     """
 
     if space:
@@ -256,7 +292,7 @@ def plot_domain(domain, dependences=None, tiling=None, space=None,
         tiling = tiling.intersect_domain(domain)
         plot_map_as_groups(tiling, color=tile_color, vertex_color=vertex_color,
                            vertex_size=vertex_size, vertex_marker=vertex_marker,
-                           alpha=tile_alpha)
+                           alpha=tile_alpha, border=border)
 
 __all__ = ['plot_set_points', 'plot_bset_shape', 'plot_set_shapes',
            'plot_map', 'plot_map_as_groups', 'plot_domain']
