@@ -23,7 +23,7 @@ def _vertex_to_rational_point(vertex):
     for i in range(expr.dim(dim_type.out)):
         subexpr = expr.get_aff(i)
         val = subexpr.get_constant_val()
-        value.append((val.get_num_si(), val.get_den_si()))
+        value.append((val.get_num_si(), val.get_den_val().to_python()))
 
     return value
 
